@@ -15,7 +15,19 @@ class UserRoleMiddleware
      */
     public function handle(Request $request, Closure $next,$role): Response
     {
-        if(Auth::check() && Auth::user()->role == $role){
+        if (!Auth::check()) {
+            return response()->json(['You do not have permission to access for this page']);
+        }
+
+        $allowed = collect(preg_split('/[|,]/', (string) $role))
+            ->map(fn ($value) => trim($value))
+            ->filter();
+
+        if ($allowed->isEmpty()) {
+            return response()->json(['You do not have permission to access for this page']);
+        }
+
+        if ($allowed->contains(Auth::user()->role?->slug)) {
             return $next($request);
         }
         return response()->json(['You do not have permission to access for this page']);
