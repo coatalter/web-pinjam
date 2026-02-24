@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\MenuController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,10 +26,20 @@ Route::middleware(['auth', 'user-role:user'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'userHome'])->name('home');
 });
 
-// Admin Routes
-Route::middleware(['auth', 'user-role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'adminHome'])->name('home');
+//Admin Routes
+Route::middleware(['auth','user-role:admin'])->group(function()
+{
+    Route::get("/admin/home",[App\Http\Controllers\HomeController::class, 'adminHome'])->name("admin.home");
 
-    // Role Management
-    Route::resource('roles', App\Http\Controllers\RoleController::class);
+    //baru//
+    Route::prefix('admin')
+    ->middleware(['auth'])
+    ->name('admin.')
+    ->group(function () {
+
+        Route::resource('menus', MenuController::class);
+
+    });
+
 });
+

@@ -6,6 +6,8 @@ use App\Models\Menu;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Auth;
+use App\Services\MenuService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,11 +21,29 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
 
         View::composer('layouts.partials.admin.navbar-vertical-admin', function ($view) {
-            $view->with('dynamicMenus', $this->getMenusForCurrentUser('admin'));
+            if (Auth::check()) {
+                $menuService = app(MenuService::class);
+
+                $menus = $menuService->getMenuByRole(
+                    Auth::user()->role_id,
+                    'admin'
+                );
+
+                $view->with('dynamicMenus', $menus);
+            }
         });
 
         View::composer('layouts.partials.admin.navbar-vertical-user', function ($view) {
-            $view->with('dynamicMenus', $this->getMenusForCurrentUser('user'));
+            if (Auth::check()) {
+                $menuService = app(MenuService::class);
+
+                $menus = $menuService->getMenuByRole(
+                    Auth::user()->role_id,
+                    'user'
+                );
+
+                $view->with('dynamicMenus', $menus);
+            }
         });
     }
 
@@ -40,11 +60,11 @@ class AppServiceProvider extends ServiceProvider
             ->where('context', $context)
             ->whereNull('parent_id')
             ->where('is_active', true)
-            ->whereHas('roles', fn ($q) => $q->where('roles.id', $roleId))
+            ->whereHas('roles', fn($q) => $q->where('roles.id', $roleId))
             ->with([
-                'children' => fn ($q) => $q
+                'children' => fn($q) => $q
                     ->where('is_active', true)
-                    ->whereHas('roles', fn ($q) => $q->where('roles.id', $roleId))
+                    ->whereHas('roles', fn($q) => $q->where('roles.id', $roleId))
                     ->orderBy('sort_order'),
             ])
             ->orderBy('sort_order')
