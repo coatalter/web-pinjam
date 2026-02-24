@@ -12,3 +12,4 @@
 <script src="{{ asset('admin_assets/js/alpinejs.min.js') }}"></script>
 <script src="{{ asset('admin_assets/js/feather.js') }}"></script>
 <script src="{{ asset('admin_assets/js/sidebarMenu.js') }}"></script>
+@stack('scripts')

@@ -19,16 +19,15 @@ Route::get('/', function () {
 
 Auth::routes();
 
-//User Routes
-Route::middleware(['auth','user-role:user'])->group(function()
-{
-    Route::get("/home",[App\Http\Controllers\HomeController::class, 'userHome'])->name("home");
+// User Routes
+Route::middleware(['auth', 'user-role:user'])->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'userHome'])->name('home');
 });
 
-//Admin Routes
-Route::middleware(['auth','user-role:admin'])->group(function()
-{
-    Route::get("/admin/home",[App\Http\Controllers\HomeController::class, 'adminHome'])->name("admin.home");
+// Admin Routes
+Route::middleware(['auth', 'user-role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'adminHome'])->name('home');
 
+    // Role Management
+    Route::resource('roles', App\Http\Controllers\RoleController::class);
 });
-
