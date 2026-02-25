@@ -9,7 +9,7 @@
             <!-- Icon/Indicator -->
             @if($depth == 0)
                 <div
-                    class="w-10 h-10 rounded-xl {{ $menu->is_active ? 'bg-indigo-50 border-indigo-100 text-indigo-500' : 'bg-slate-100 border-slate-200 text-slate-400' }} border flex items-center justify-center shadow-sm">
+                    class="w-10 h-10 rounded-xl {{ $menu->is_active ? 'bg-navy-50 border-navy-100 text-navy-500' : 'bg-slate-100 border-slate-200 text-slate-400' }} border flex items-center justify-center shadow-sm">
                     @if($menu->icon)
                         <i data-feather="{{ $menu->icon }}" class="w-5 h-5"></i>
                     @else

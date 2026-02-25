@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->role?->slug === $slug;
     }
+
+    public function bookings(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

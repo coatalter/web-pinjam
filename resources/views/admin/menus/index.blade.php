@@ -6,7 +6,7 @@
         <div
             class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden">
             <div
-                class="absolute -top-24 -right-24 w-64 h-64 bg-indigo-500/20 rounded-full mix-blend-screen filter blur-[80px] animate-pulse-slow">
+                class="absolute -top-24 -right-24 w-64 h-64 bg-navy-500/20 rounded-full mix-blend-screen filter blur-[80px] animate-pulse-slow">
             </div>
             <div class="relative z-10">
                 <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight mb-1">Manajemen Menu</h1>
@@ -14,16 +14,16 @@
                     <ol class="inline-flex items-center space-x-1 md:space-x-3 text-sm text-slate-500 font-medium">
                         <li>
                             <a href="{{ route('admin.home') }}"
-                                class="hover:text-indigo-600 transition-colors">Dashboard</a>
+                                class="hover:text-navy-600 transition-colors">Dashboard</a>
                         </li>
                         <li><span class="mx-2">/</span></li>
-                        <li class="text-indigo-600 font-semibold" aria-current="page">Menu</li>
+                        <li class="text-navy-600 font-semibold" aria-current="page">Menu</li>
                     </ol>
                 </nav>
             </div>
             <div class="relative z-10">
                 <a href="{{ route('admin.menus.create') }}"
-                    class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl hover:from-indigo-500 hover:to-purple-500 transition-all shadow-lg hover:shadow-indigo-500/30 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-navy-600 to-navy-600 rounded-xl hover:from-navy-500 hover:to-navy-500 transition-all shadow-lg hover:shadow-navy-500/30 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
@@ -109,7 +109,7 @@
                             tambahkan menu baru.</p>
 
                         <a href="{{ route('admin.menus.create') }}"
-                            class="mt-6 inline-flex items-center px-4 py-2 text-sm font-semibold text-indigo-600 bg-indigo-50 rounded-xl hover:bg-indigo-100 transition-colors">
+                            class="mt-6 inline-flex items-center px-4 py-2 text-sm font-semibold text-navy-600 bg-navy-50 rounded-xl hover:bg-navy-100 transition-colors">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                             </svg>
