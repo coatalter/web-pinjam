@@ -30,7 +30,7 @@
 
                 <!-- Avatar & Overview Section -->
                 <div class="p-6 md:p-8 flex flex-col md:flex-row gap-8 items-start relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-transparent pointer-events-none">
+                    <div class="absolute inset-0 bg-gradient-to-br from-navy-50/50 to-transparent pointer-events-none">
                     </div>
 
                     <div class="relative group mx-auto md:mx-0 shrink-0">
@@ -58,13 +58,13 @@
                             <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Nama Lengkap <span
                                     class="text-rose-500">*</span></label>
                             <input type="text" name="name" value="{{ old('name', $user->name) }}" required
-                                class="w-full px-4 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-slate-800 placeholder-slate-400">
+                                class="w-full px-4 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gold-500/20 focus:border-gold-500 transition-all font-medium text-slate-800 placeholder-slate-400">
                         </div>
                         <div class="space-y-1">
                             <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Alamat Email <span
                                     class="text-rose-500">*</span></label>
                             <input type="email" name="email" value="{{ old('email', $user->email) }}" required
-                                class="w-full px-4 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-slate-800 placeholder-slate-400">
+                                class="w-full px-4 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gold-500/20 focus:border-gold-500 transition-all font-medium text-slate-800 placeholder-slate-400">
                         </div>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                 <!-- Password Change Section -->
                 <div class="p-6 md:p-8 bg-slate-50/30">
                     <h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
-                        <i data-feather="lock" class="w-4 h-4 text-indigo-500"></i>
+                        <i data-feather="lock" class="w-4 h-4 text-navy-500"></i>
                         Ubah Kata Sandi
                     </h3>
                     <p class="text-xs text-slate-500 mb-6">Kosongkan bagian ini jika Anda tidak ingin mengubah kata sandi.
@@ -83,18 +83,18 @@
                             <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Kata Sandi Saat
                                 Ini</label>
                             <input type="password" name="current_password"
-                                class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder-slate-300">
+                                class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-gold-500/20 focus:border-gold-500 transition-all placeholder-slate-300">
                         </div>
                         <div class="space-y-1">
                             <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Kata Sandi Baru</label>
                             <input type="password" name="password"
-                                class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder-slate-300">
+                                class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-gold-500/20 focus:border-gold-500 transition-all placeholder-slate-300">
                         </div>
                         <div class="space-y-1">
                             <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Konfirmasi Kata Sandi
                                 Baru</label>
                             <input type="password" name="password_confirmation"
-                                class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder-slate-300">
+                                class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-gold-500/20 focus:border-gold-500 transition-all placeholder-slate-300">
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                         Batal
                     </a>
                     <button type="submit"
-                        class="px-6 py-2.5 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/30 rounded-xl transition-all flex items-center gap-2">
+                        class="px-6 py-2.5 text-sm font-bold text-white bg-navy-600 hover:bg-navy-700 hover:shadow-lg hover:shadow-navy-500/30 rounded-xl transition-all flex items-center gap-2">
                         <i data-feather="save" class="w-4 h-4"></i>
                         Simpan Perubahan
                     </button>

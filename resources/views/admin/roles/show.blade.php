@@ -6,7 +6,7 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div class="flex items-center gap-4">
                 <a href="{{ route('admin.roles.index') }}"
-                    class="flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    class="flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-navy-600 hover:border-navy-200 hover:bg-navy-50 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-gold-500">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -17,12 +17,12 @@
                     <nav class="flex mt-1" aria-label="Breadcrumb">
                         <ol class="inline-flex items-center space-x-1 md:space-x-2 text-xs text-slate-500 font-medium">
                             <li><a href="{{ route('admin.home') }}"
-                                    class="hover:text-indigo-600 transition-colors">Dashboard</a></li>
+                                    class="hover:text-navy-600 transition-colors">Dashboard</a></li>
                             <li><span class="mx-1 text-slate-300">/</span></li>
                             <li><a href="{{ route('admin.roles.index') }}"
-                                    class="hover:text-indigo-600 transition-colors">Role</a></li>
+                                    class="hover:text-navy-600 transition-colors">Role</a></li>
                             <li><span class="mx-1 text-slate-300">/</span></li>
-                            <li class="text-indigo-600 font-semibold truncate max-w-[150px] sm:max-w-xs"
+                            <li class="text-navy-600 font-semibold truncate max-w-[150px] sm:max-w-xs"
                                 aria-current="page">{{ $role->name }}</li>
                         </ol>
                     </nav>
@@ -57,14 +57,14 @@
                 <!-- Role Info Card -->
                 <div
                     class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
-                    <div class="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-indigo-400 to-cyan-400"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-navy-400 to-cyan-400"></div>
                     <!-- Decorative BG -->
-                    <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-indigo-50 rounded-full blur-2xl opacity-60">
+                    <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-navy-50 rounded-full blur-2xl opacity-60">
                     </div>
 
                     <div class="p-8 text-center relative z-10">
                         <div
-                            class="w-20 h-20 mx-auto rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-500 shadow-sm mb-4">
+                            class="w-20 h-20 mx-auto rounded-full bg-navy-50 border border-navy-100 flex items-center justify-center text-navy-500 shadow-sm mb-4">
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
@@ -81,7 +81,7 @@
 
                         <div class="pt-6 border-t border-slate-100 grid grid-cols-2 gap-4">
                             <div class="text-center p-3 rounded-2xl bg-slate-50 border border-slate-100">
-                                <h3 class="text-2xl font-bold text-indigo-600">{{ $role->users_count }}</h3>
+                                <h3 class="text-2xl font-bold text-navy-600">{{ $role->users_count }}</h3>
                                 <p class="text-xs uppercase tracking-wider font-semibold text-slate-500 mt-1">Pengguna</p>
                             </div>
                             <!-- Jika model menu dan relationship tidak ada, tampilkan 0 atau hapus -->
@@ -130,7 +130,7 @@
                     <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                         <div>
                             <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-                                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 text-navy-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
                                     </path>
@@ -140,7 +140,7 @@
                             <p class="text-sm text-slate-500 mt-1">Daftar pengguna yang ditugaskan dengan role ini.</p>
                         </div>
                         <span
-                            class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold text-sm">
+                            class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-navy-100 text-navy-700 font-bold text-sm">
                             {{ $role->users_count }}
                         </span>
                     </div>
@@ -166,7 +166,7 @@
                                             <td class="px-8 py-4 whitespace-nowrap">
                                                 <div class="flex items-center gap-3">
                                                     <div
-                                                        class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 text-white flex items-center justify-center font-bold shadow-sm ring-2 ring-white">
+                                                        class="w-10 h-10 rounded-full bg-gradient-to-br from-navy-500 to-navy-500 text-white flex items-center justify-center font-bold shadow-sm ring-2 ring-white">
                                                         {{ strtoupper(substr($user->name, 0, 1)) }}
                                                     </div>
                                                     <div>
@@ -204,7 +204,7 @@
                                     saat ini diberikan hak akses dari role ini.</p>
 
                                 <a href="#"
-                                    class="mt-6 inline-flex items-center px-4 py-2 text-sm font-semibold text-indigo-600 bg-indigo-50 rounded-xl hover:bg-indigo-100 transition-colors">
+                                    class="mt-6 inline-flex items-center px-4 py-2 text-sm font-semibold text-navy-600 bg-navy-50 rounded-xl hover:bg-navy-100 transition-colors">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z">

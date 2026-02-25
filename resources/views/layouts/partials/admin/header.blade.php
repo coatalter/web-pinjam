@@ -1,138 +1,50 @@
-<div class="header @@classList">
-    <!-- navbar -->
-    <nav class="navbar-classic navbar navbar-expand-lg">
-        <a id="nav-toggle" href="#"><i data-feather="menu" class="nav-icon me-2 icon-xs"></i></a>
-        <div class="ms-lg-3 d-none d-md-none d-lg-block">
-            <!-- Form -->
-            <form class="d-flex align-items-center">
-                <input type="search" class="form-control" placeholder="Search" />
-            </form>
+<!-- Top Header -->
+<header
+    class="sticky top-0 z-30 bg-white/80 backdrop-blur-lg border-b border-slate-200/60 h-16 flex items-center justify-between px-6">
+    <!-- Left: Mobile menu -->
+    <div class="flex items-center gap-4">
+        <button @click="mobileMenu = !mobileMenu"
+            class="lg:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-navy-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Right: User menu -->
+    <div class="flex items-center gap-3" x-data="{ open: false }">
+        <button @click="open = !open"
+            class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-slate-100 transition-colors">
+            <div
+                class="w-8 h-8 rounded-full bg-gradient-to-br from-navy-500 to-navy-700 text-white flex items-center justify-center font-bold text-xs">
+                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+            </div>
+            <div class="hidden sm:block text-left">
+                <p class="text-sm font-semibold text-slate-700 leading-tight">{{ Auth::user()->name }}</p>
+                <p class="text-[11px] text-slate-400">{{ Auth::user()->role?->name ?? 'User' }}</p>
+            </div>
+            <svg class="w-4 h-4 text-slate-400 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </button>
+
+        <!-- Dropdown -->
+        <div x-show="open" @click.outside="open = false" x-transition
+            class="absolute right-6 top-14 w-56 bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-100 py-2 z-50">
+            <div class="px-4 py-3 border-b border-slate-100">
+                <p class="text-sm font-semibold text-slate-800">{{ Auth::user()->name }}</p>
+                <p class="text-xs text-slate-500">{{ Auth::user()->email }}</p>
+            </div>
+            <a href="{{ route('logout') }}"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                class="flex items-center gap-2 px-4 py-2.5 text-sm text-danger-600 hover:bg-danger-50 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Logout
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">@csrf</form>
         </div>
-        <!--Navbar nav -->
-        <ul class="navbar-nav navbar-right-wrap ms-auto d-flex nav-top-wrap">
-            <li class="dropdown stopevent">
-                <a class="btn btn-light btn-icon rounded-circle indicator
-          indicator-primary text-muted"
-                    href="#" role="button" id="dropdownNotification" data-bs-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    <i class="icon-xs" data-feather="bell"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" aria-labelledby="dropdownNotification">
-                    <div>
-                        <div
-                            class="border-bottom px-3 pt-2 pb-3 d-flex
-              justify-content-between align-items-center">
-                            <p class="mb-0 text-dark fw-medium fs-4">Notifications</p>
-                            <a href="#" class="text-muted">
-                                <span>
-                                    <i class="me-1 icon-xxs" data-feather="settings"></i>
-                                </span>
-                            </a>
-                        </div>
-                        <!-- List group -->
-                        <ul class="list-group list-group-flush notification-list-scroll">
-                            <!-- List group item -->
-                            <li class="list-group-item bg-light">
-                                <a href="#" class="text-muted">
-                                    <h5 class=" mb-1">Rishi Chopra</h5>
-                                    <p class="mb-0">
-                                        Mauris blandit erat id nunc blandit, ac eleifend dolor pretium.
-                                    </p>
-                                </a>
-                            </li>
-                            <!-- List group item -->
-                            <li class="list-group-item">
-                                <a href="#" class="text-muted">
-                                    <h5 class=" mb-1">Neha Kannned</h5>
-                                    <p class="mb-0">
-                                        Proin at elit vel est condimentum elementum id in ante. Maecenas et sapien
-                                        metus.
-                                    </p>
-                                </a>
-                            </li>
-                            <!-- List group item -->
-                            <li class="list-group-item">
-                                <a href="#" class="text-muted">
-                                    <h5 class=" mb-1">Nirmala Chauhan</h5>
-                                    <p class="mb-0">
-                                        Morbi maximus urna lobortis elit sollicitudin sollicitudieget elit vel pretium.
-                                    </p>
-                                </a>
-                            </li>
-                            <!-- List group item -->
-                            <li class="list-group-item">
-                                <a href="#" class="text-muted">
-                                    <h5 class=" mb-1">Sina Ray</h5>
-                                    <p class="mb-0">
-                                        Sed aliquam augue sit amet mauris volutpat hendrerit sed nunc eu diam.
-                                    </p>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="border-top px-3 py-2 text-center">
-                            <a href="#" class="text-inherit fw-semi-bold">
-                                View all Notifications
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <!-- List -->
-            <li class="dropdown ms-2">
-                <a class="rounded-circle" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    <div class="avatar avatar-md avatar-indicators avatar-online">
-                        <img alt="avatar" src="{{ Avatar::create(Auth::user()->name)->toBase64() }}"
-                            class="rounded-circle" />
-                    </div>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
-                    <div class="px-4 pb-0 pt-2">
-                        <div class="lh-1 ">
-                            <h5 class="mb-1">{{ Auth::user()->name }} </h5>
-                            <a href="#" class="text-inherit fs-6">Role:{{ Auth::user()->role?->name }}</a>
-                        </div>
-                        <div class=" dropdown-divider mt-3 mb-2"></div>
-                    </div>
-                    <ul class="list-unstyled">
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="me-2 icon-xxs dropdown-item-icon" data-feather="user"></i>Edit
-                                Profile
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="me-2 icon-xxs dropdown-item-icon" data-feather="activity"></i>Activity Log
-                            </a>
-
-
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item text-primary" href="#">
-                                <i class="me-2 icon-xxs text-primary dropdown-item-icon" data-feather="star"></i>Go Pro
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="me-2 icon-xxs dropdown-item-icon" data-feather="settings"></i>Account Settings
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-
-                                <i class="me-2 icon-xxs dropdown-item-icon" data-feather="power"></i>{{ __('Logout') }}
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </li>
-                    </ul>
-
-                </div>
-            </li>
-        </ul>
-    </nav>
-</div>
+    </div>
+</header>

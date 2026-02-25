@@ -4,21 +4,21 @@
     <div class="space-y-8 animate-fade-in">
         <!-- Page Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden">
-            <div class="absolute -top-24 -right-24 w-64 h-64 bg-indigo-500/20 rounded-full mix-blend-screen filter blur-[80px] animate-pulse-slow"></div>
+            <div class="absolute -top-24 -right-24 w-64 h-64 bg-navy-500/20 rounded-full mix-blend-screen filter blur-[80px] animate-pulse-slow"></div>
             <div class="relative z-10">
                 <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight mb-1">Manajemen Role</h1>
                 <nav class="flex" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-1 md:space-x-3 text-sm text-slate-500 font-medium">
                         <li>
-                            <a href="{{ route('admin.home') }}" class="hover:text-indigo-600 transition-colors">Dashboard</a>
+                            <a href="{{ route('admin.home') }}" class="hover:text-navy-600 transition-colors">Dashboard</a>
                         </li>
                         <li><span class="mx-2">/</span></li>
-                        <li class="text-indigo-600 font-semibold" aria-current="page">Role</li>
+                        <li class="text-navy-600 font-semibold" aria-current="page">Role</li>
                     </ol>
                 </nav>
             </div>
             <div class="relative z-10">
-                <a href="{{ route('admin.roles.create') }}" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl hover:from-indigo-500 hover:to-purple-500 transition-all shadow-lg hover:shadow-indigo-500/30 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <a href="{{ route('admin.roles.create') }}" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-navy-600 to-navy-600 rounded-xl hover:from-navy-500 hover:to-navy-500 transition-all shadow-lg hover:shadow-navy-500/30 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
@@ -60,9 +60,9 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Total Roles -->
             <div class="relative group rounded-3xl bg-white border border-slate-100 p-6 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1">
-                <div class="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-indigo-400 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                <div class="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-navy-400 to-navy-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
                 <div class="flex flex-col mb-2">
-                    <div class="w-14 h-14 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-navy-50 border border-navy-100 flex items-center justify-center text-navy-600 mb-4 group-hover:bg-navy-600 group-hover:text-white transition-colors duration-300 shadow-sm">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                         </svg>
@@ -121,14 +121,14 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </div>
-                        <input type="text" name="search" value="{{ request('search') }}" class="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-xl leading-5 bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-colors" placeholder="Cari role...">
+                        <input type="text" name="search" value="{{ request('search') }}" class="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-xl leading-5 bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 sm:text-sm transition-colors" placeholder="Cari role...">
                     </div>
                     @if(request('search'))
-                        <a href="{{ route('admin.roles.index') }}" class="inline-flex items-center px-4 py-2 border border-slate-200 shadow-sm text-sm font-medium rounded-xl text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                        <a href="{{ route('admin.roles.index') }}" class="inline-flex items-center px-4 py-2 border border-slate-200 shadow-sm text-sm font-medium rounded-xl text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500 transition-colors">
                             Reset
                         </a>
                     @endif
-                    <button type="submit" class="hidden sm:inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                    <button type="submit" class="hidden sm:inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-xl text-white bg-navy-600 hover:bg-navy-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500 transition-colors">
                         Cari
                     </button>
                 </form>
@@ -155,7 +155,7 @@
                                 </td>
                                 <td class="px-8 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-500 shadow-sm group-hover:bg-indigo-500 group-hover:text-white transition-colors">
+                                        <div class="w-10 h-10 rounded-full bg-navy-50 border border-navy-100 flex items-center justify-center text-navy-500 shadow-sm group-hover:bg-navy-500 group-hover:text-white transition-colors">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                                             </svg>

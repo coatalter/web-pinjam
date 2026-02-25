@@ -118,13 +118,13 @@
                                         Pengecualian role akan menyembunyikan menu di sidebar mereka.
                                     </p>
                                 </div>
-                                <div class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-5">
+                                <div class="bg-navy-50/50 border border-navy-100 rounded-xl p-5">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                         @foreach($roles as $role)
-                                            <div class="relative flex items-start p-3 border border-indigo-100 bg-white rounded-lg hover:border-indigo-300 transition-colors shadow-sm">
+                                            <div class="relative flex items-start p-3 border border-navy-100 bg-white rounded-lg hover:border-navy-300 transition-colors shadow-sm">
                                                 <div class="flex h-6 items-center">
                                                     <input id="role-{{ $role->id }}" name="roles[]" value="{{ $role->id }}" type="checkbox" 
-                                                        class="h-4 w-4 rounded border-indigo-300 text-indigo-600 focus:ring-indigo-600 transition-colors cursor-pointer"
+                                                        class="h-4 w-4 rounded border-navy-300 text-navy-600 focus:ring-gold-600 transition-colors cursor-pointer"
                                                         {{ $menu->roles->contains($role->id) ? 'checked' : '' }}>
                                                 </div>
                                                 <div class="ml-3 text-sm leading-6">

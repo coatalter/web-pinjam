@@ -8,30 +8,41 @@ use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $adminRoleId = Role::where('slug', 'admin')->value('id');
-        $userRoleId = Role::where('slug', 'user')->value('id');
-
-        User::updateOrCreate(
-            ['email' => 'admin@admin.com'],
+        $users = [
             [
-                'name' => 'Admin',
-                'password' => bcrypt('password'),
-                'role_id' => $adminRoleId,
-            ]
-        );
-
-        User::updateOrCreate(
-            ['email' => 'user@user.com'],
+                'name' => 'Super Admin',
+                'email' => 'admin@admin.com',
+                'role' => 'admin',
+            ],
             [
-                'name' => 'User',
-                'password' => bcrypt('password'),
-                'role_id' => $userRoleId,
-            ]
-        );
+                'name' => 'Admin Fakultas Teknik',
+                'email' => 'admin.teknik@upr.ac.id',
+                'role' => 'admin-fakultas',
+            ],
+            [
+                'name' => 'Dr. Budi Santoso',
+                'email' => 'budi.santoso@upr.ac.id',
+                'role' => 'dosen',
+            ],
+            [
+                'name' => 'Andi Mahasiswa',
+                'email' => 'andi@student.upr.ac.id',
+                'role' => 'mahasiswa',
+            ],
+        ];
+
+        foreach ($users as $data) {
+            $roleId = Role::where('slug', $data['role'])->value('id');
+            User::updateOrCreate(
+                ['email' => $data['email']],
+                [
+                    'name' => $data['name'],
+                    'password' => bcrypt('password'),
+                    'role_id' => $roleId,
+                ]
+            );
+        }
     }
 }
