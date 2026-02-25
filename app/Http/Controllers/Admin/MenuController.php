@@ -15,7 +15,6 @@ class MenuController extends Controller
     public function index()
     {
         $menus = Menu::whereNull('parent_id')
-            ->whereNull('parent_id')
             ->where('context', 'admin')
             ->orderBy('sort_order')
             ->get();

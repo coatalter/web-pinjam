@@ -1,738 +1,81 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="bg-primary pt-10 pb-21"></div>
-    <div class="container-fluid mt-n22 px-6">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-12">
-                <!-- Page header -->
+    <div class="space-y-8 animate-fade-in">
+        <!-- Welcome -->
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-navy-600 via-navy-500 to-navy-700 p-8 shadow-xl">
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-gold-500/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-16 -left-16 w-48 h-48 bg-navy-300/10 rounded-full blur-3xl"></div>
+            <div class="relative z-10">
+                <h1 class="text-3xl font-extrabold text-white tracking-tight">Selamat Datang, {{ Auth::user()->name }}! 👋</h1>
+                <p class="text-navy-100 mt-2 max-w-xl">Kelola ruangan dan peminjaman dari dashboard admin.</p>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            @php
+                $totalRooms = \App\Models\Room::count();
+                $activeRooms = \App\Models\Room::where('is_active', true)->count();
+                $pendingBookings = \App\Models\Booking::where('status', 'pending')->count();
+                $totalUsers = \App\Models\User::count();
+            @endphp
+            @foreach([
+                ['label' => 'Total Ruangan', 'value' => $totalRooms, 'from' => 'from-navy-500', 'to' => 'to-navy-600', 'bg' => 'bg-navy-50', 'text' => 'text-navy-600', 'border' => 'border-navy-100', 'icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'],
+                ['label' => 'Ruangan Aktif', 'value' => $activeRooms, 'from' => 'from-success-500', 'to' => 'to-success-600', 'bg' => 'bg-success-50', 'text' => 'text-success-600', 'border' => 'border-success-100', 'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
+                ['label' => 'Pending Approval', 'value' => $pendingBookings, 'from' => 'from-gold-500', 'to' => 'to-gold-600', 'bg' => 'bg-gold-50', 'text' => 'text-gold-700', 'border' => 'border-gold-100', 'icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'],
+                ['label' => 'Total User', 'value' => $totalUsers, 'from' => 'from-sky-500', 'to' => 'to-sky-600', 'bg' => 'bg-sky-50', 'text' => 'text-sky-600', 'border' => 'border-sky-100', 'icon' => 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z'],
+            ] as $stat)
+                <div class="relative group rounded-2xl bg-white border border-slate-100 p-6 shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-0.5">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-3xl font-black text-slate-800">{{ $stat['value'] }}</p>
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 mt-1">{{ $stat['label'] }}</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-2xl {{ $stat['bg'] }} {{ $stat['border'] }} border flex items-center justify-center {{ $stat['text'] }}">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $stat['icon'] }}"></path></svg>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <!-- Recent Bookings -->
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden">
+            <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                 <div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="mb-2 mb-lg-0">
-                            <h3 class="mb-0  text-white">Welcome {{ Auth::user()->role?->name }}</h3>
-                        </div>
-                        <div>
-                            <a href="#" class="btn btn-white">Create New Project</a>
-                        </div>
-                    </div>
+                    <h3 class="text-lg font-bold text-slate-800">Peminjaman Terbaru</h3>
+                    <p class="text-sm text-slate-500">5 peminjaman terakhir yang masuk</p>
                 </div>
+                <a href="{{ route('admin.bookings.index') }}" class="text-sm font-semibold text-navy-600 hover:text-navy-800 transition-colors">Lihat Semua →</a>
             </div>
-            <div class="col-xl-3 col-lg-6 col-md-12 col-12 mt-6">
-                <!-- card -->
-                <div class="card ">
-                    <!-- card body -->
-                    <div class="card-body">
-                        <!-- heading -->
-                        <div class="d-flex justify-content-between align-items-center
-        mb-3">
-                            <div>
-                                <h4 class="mb-0">Projects</h4>
-                            </div>
-                            <div class="icon-shape icon-md bg-light-primary text-primary
-          rounded-2">
-                                <i class="bi bi-briefcase fs-4"></i>
-                            </div>
-                        </div>
-                        <!-- project number -->
-                        <div>
-                            <h1 class="fw-bold">18</h1>
-                            <p class="mb-0"><span class="text-dark me-2">2</span>Completed</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-12 col-12 mt-6">
-                <!-- card -->
-                <div class="card ">
-                    <!-- card body -->
-                    <div class="card-body">
-                        <!-- heading -->
-                        <div class="d-flex justify-content-between align-items-center
-        mb-3">
-                            <div>
-                                <h4 class="mb-0">Active Task</h4>
-                            </div>
-                            <div class="icon-shape icon-md bg-light-primary text-primary
-          rounded-2">
-                                <i class="bi bi-list-task fs-4"></i>
-                            </div>
-                        </div>
-                        <!-- project number -->
-                        <div>
-                            <h1 class="fw-bold">132</h1>
-                            <p class="mb-0"><span class="text-dark me-2">28</span>Completed</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-12 col-12 mt-6">
-                <!-- card -->
-                <div class="card ">
-                    <!-- card body -->
-                    <div class="card-body">
-                        <!-- heading -->
-                        <div class="d-flex justify-content-between align-items-center
-        mb-3">
-                            <div>
-                                <h4 class="mb-0">Teams</h4>
-                            </div>
-                            <div class="icon-shape icon-md bg-light-primary text-primary
-          rounded-2">
-                                <i class="bi bi-people fs-4"></i>
-                            </div>
-                        </div>
-                        <!-- project number -->
-                        <div>
-                            <h1 class="fw-bold">12</h1>
-                            <p class="mb-0"><span class="text-dark me-2">1</span>Completed</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-12 col-12 mt-6">
-                <!-- card -->
-                <div class="card ">
-                    <!-- card body -->
-                    <div class="card-body">
-                        <!-- heading -->
-                        <div class="d-flex justify-content-between align-items-center
-        mb-3">
-                            <div>
-                                <h4 class="mb-0">Productivity</h4>
-                            </div>
-                            <div class="icon-shape icon-md bg-light-primary text-primary
-          rounded-2">
-                                <i class="bi bi-bullseye fs-4"></i>
-                            </div>
-                        </div>
-                        <!-- project number -->
-                        <div>
-                            <h1 class="fw-bold">76%</h1>
-                            <p class="mb-0"><span class="text-success me-2">5%</span>Completed</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- row  -->
-        <div class="row mt-6">
-            <div class="col-md-12 col-12">
-                <!-- card  -->
-                <div class="card">
-                    <!-- card header  -->
-                    <div class="card-header bg-white  py-4">
-                        <h4 class="mb-0">Active Projects</h4>
-                    </div>
-                    <!-- table  -->
-                    <div class="table-responsive">
-                        <table class="table text-nowrap mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Project name</th>
-                                    <th>Hours</th>
-                                    <th>priority</th>
-                                    <th>Members</th>
-                                    <th>Progress</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="align-middle">
-                                        <div class="d-flex
-                align-items-center">
-                                            <div>
-                                                <div class="icon-shape icon-md border p-4
-                    rounded-1">
-                                                    <img src="{{ asset('admin_assets/images/brand/dropbox-logo.svg') }}"
-                                                        alt="">
-                                                </div>
-                                            </div>
-                                            <div class="ms-3 lh-1">
-                                                <h5 class=" mb-1"> <a href="#" class="text-inherit">Dropbox Design
-                                                        System</a></h5>
-
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle">34</td>
-                                    <td class="align-middle"><span class="badge
-                bg-warning">Medium</span>
-                                    </td>
-                                    <td class="align-middle">
-                                        <div class="avatar-group">
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-1.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-2.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-3.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm avatar-primary">
-                                                <span
-                                                    class="avatar-initials rounded-circle
-                    fs-6">+5</span>
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle text-dark">
-                                        <div class="float-start me-3">15%</div>
-                                        <div class="mt-2">
-                                            <div class="progress" style="height: 5px;">
-                                                <div class="progress-bar" role="progressbar" style="width:15%"
-                                                    aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle">
-                                        <div class="d-flex
-                align-items-center">
-                                            <div>
-                                                <div class="icon-shape icon-md border p-4
-                    rounded-1">
-                                                    <img src="{{asset('admin_assets/images/brand/slack-logo.svg')}}" alt="">
-                                                </div>
-                                            </div>
-                                            <div class="ms-3 lh-1">
-                                                <h5 class=" mb-1"> <a href="#" class="text-inherit">Slack Team UI
-                                                        Design</a></h5>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle">47</td>
-                                    <td class="align-middle"><span class="badge
-                bg-danger">High</span>
-                                    </td>
-                                    <td class="align-middle">
-                                        <div class="avatar-group">
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-4.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-5.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-6.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm avatar-primary">
-                                                <span
-                                                    class="avatar-initials rounded-circle
-                    fs-6">+5</span>
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle text-dark">
-                                        <div class="float-start me-3">35%</div>
-                                        <div class="mt-2">
-                                            <div class="progress" style="height: 5px;">
-                                                <div class="progress-bar" role="progressbar" style="width:35%"
-                                                    aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle">
-                                        <div class="d-flex
-                align-items-center">
-                                            <div>
-                                                <div class="icon-shape icon-md border p-4
-                    rounded-1">
-                                                    <img src="{{asset('admin_assets/images/brand/github-logo.svg')}}" alt="">
-                                                </div>
-                                            </div>
-                                            <div class="ms-3 lh-1">
-                                                <h5 class=" mb-1"> <a href="#" class="text-inherit">GitHub
-                                                        Satellite</a></h5>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle">120</td>
-                                    <td class="align-middle"><span class="badge bg-info">Low</span></td>
-                                    <td class="align-middle">
-                                        <div class="avatar-group">
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-7.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-8.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-9.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm avatar-primary">
-                                                <span
-                                                    class="avatar-initials rounded-circle
-                    fs-6">+1</span>
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle text-dark">
-                                        <div class="float-start me-3">75%</div>
-                                        <div class="mt-2">
-                                            <div class="progress" style="height: 5px;">
-                                                <div class="progress-bar" role="progressbar" style="width:75%"
-                                                    aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle">
-                                        <div class="d-flex
-                align-items-center">
-                                            <div>
-                                                <div class="icon-shape icon-md border p-4
-                    rounded-1">
-                                                    <img src="{{asset('admin_assets/images/brand/3dsmax-logo.svg')}}" alt="">
-                                                </div>
-                                            </div>
-                                            <div class="ms-3 lh-1">
-                                                <h5 class=" mb-1"> <a href="#" class="text-inherit">3D
-                                                        Character Modelling</a></h5>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle">89</td>
-                                    <td class="align-middle"><span class="badge
-                bg-warning">Medium</span>
-                                    </td>
-                                    <td class="align-middle">
-                                        <div class="avatar-group">
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-10.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-11.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-12.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm avatar-primary">
-                                                <span
-                                                    class="avatar-initials rounded-circle
-                    fs-6">+5</span>
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle text-dark">
-                                        <div class="float-start me-3">63%</div>
-                                        <div class="mt-2">
-                                            <div class="progress" style="height: 5px;">
-                                                <div class="progress-bar" role="progressbar" style="width:63%"
-                                                    aria-valuenow="63" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle">
-                                        <div class="d-flex
-                align-items-center">
-                                            <div>
-                                                <div
-                                                    class="icon-shape icon-md border p-4 rounded
-                    bg-primary">
-                                                    <img src="{{asset('admin_assets/images/brand/layers-logo.svg')}}" alt="">
-                                                </div>
-                                            </div>
-                                            <div class="ms-3 lh-1">
-                                                <h5 class=" mb-1"> <a href="#" class="text-inherit">Webapp Design
-                                                        System</a>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle">108</td>
-                                    <td class="align-middle"><span class="badge
-                bg-success">Track</span>
-                                    </td>
-                                    <td class="align-middle">
-                                        <div class="avatar-group">
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-13.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-14.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar" src="{{asset('admin_assets/images/avatar/avatar-15.jpg')}}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm avatar-primary">
-                                                <span
-                                                    class="avatar-initials rounded-circle
-                    fs-6">+5</span>
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle text-dark">
-                                        <div class="float-start me-3">100%</div>
-                                        <div class="mt-2">
-                                            <div class="progress" style="height: 5px;">
-                                                <div class="progress-bar bg-success" role="progressbar"
-                                                    style="width:100%" aria-valuenow="100" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle border-bottom-0">
-                                        <div class="d-flex
-                align-items-center">
-                                            <div>
-                                                <div class="icon-shape icon-md border p-4 rounded-1">
-                                                    <img src="{{asset('admin_assets/images/brand/github-logo.svg')}}" alt="">
-                                                </div>
-                                            </div>
-                                            <div class="ms-3 lh-1">
-                                                <h5 class=" mb-1"> <a href="#" class="text-inherit">Github Event
-                                                        Design</a>
-                                                </h5>
-
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle border-bottom-0">120</td>
-                                    <td class="align-middle border-bottom-0"><span class="badge bg-info">Low</span></td>
-                                    <td class="align-middle border-bottom-0">
-                                        <div class="avatar-group">
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar"
-                                                    src="{{ asset('admin_assets/images/avatar/avatar-13.jpg') }}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar"
-                                                    src="{{ asset('admin_assets/images/avatar/avatar-14.jpg') }}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm">
-                                                <img alt="avatar"
-                                                    src="{{ asset('admin_assets/images/avatar/avatar-15.jpg') }}"
-                                                    class="rounded-circle">
-                                            </span>
-                                            <span class="avatar avatar-sm avatar-primary">
-                                                <span
-                                                    class="avatar-initials rounded-circle
-                    fs-6">+1</span>
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle text-dark border-bottom-0">
-                                        <div class="float-start me-3">75%</div>
-                                        <div class="mt-2">
-                                            <div class="progress" style="height: 5px;">
-                                                <div class="progress-bar" role="progressbar" style="width:75%"
-                                                    aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- card footer  -->
-                    <div class="card-footer bg-white text-center">
-                        <a href="#" class="link-primary">View All Projects</a>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <!-- row  -->
-        <div class="row my-6">
-            <div class="col-xl-4 col-lg-12 col-md-12 col-12 mb-6 mb-xl-0">
-                <!-- card  -->
-                <div class="card h-100">
-                    <!-- card body  -->
-                    <div class="card-body">
-                        <div class="d-flex align-items-center
-        justify-content-between">
-                            <div>
-                                <h4 class="mb-0">Tasks Performance </h4>
-                            </div>
-                            <!-- dropdown  -->
-                            <div class="dropdown dropstart">
-                                <a class="text-muted text-primary-hover" href="#" role="button" id="dropdownTask"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-xxs" data-feather="more-vertical"></i>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownTask">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- chart  -->
-                        <div class="mb-8">
-                            <div id="perfomanceChart"></div>
-                        </div>
-                        <!-- icon with content  -->
-                        <div class="d-flex align-items-center justify-content-around">
-                            <div class="text-center">
-                                <i class="icon-sm text-success" data-feather="check-circle"></i>
-                                <h1 class="mt-3  mb-1 fw-bold">76%</h1>
-                                <p>Completed</p>
-                            </div>
-                            <div class="text-center">
-                                <i class="icon-sm text-warning" data-feather="trending-up"></i>
-                                <h1 class="mt-3  mb-1 fw-bold">32%</h1>
-                                <p>In-Progress</p>
-                            </div>
-                            <div class="text-center">
-                                <i class="icon-sm text-danger" data-feather="trending-down"></i>
-                                <h1 class="mt-3  mb-1 fw-bold">13%</h1>
-                                <p>Behind</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- card  -->
-            <div class="col-xl-8 col-lg-12 col-md-12 col-12">
-                <div class="card h-100">
-                    <!-- card header  -->
-                    <div class="card-header bg-white py-4">
-                        <h4 class="mb-0">Teams </h4>
-                    </div>
-                    <!-- table  -->
-                    <div class="table-responsive">
-                        <table class="table text-nowrap">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Role</th>
-                                    <th>Last Activity</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="align-middle">
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <img src="{{ asset('admin_assets/images/avatar/avatar-2.jpg') }}"
-                                                    alt="" class="avatar-md avatar rounded-circle">
-                                            </div>
-                                            <div class="ms-3 lh-1">
-                                                <h5 class=" mb-1">Anita Parmar</h5>
-                                                <p class="mb-0">anita@example.com</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle">Front End Developer</td>
-                                    <td class="align-middle">3 May, 2023</td>
-                                    <td class="align-middle">
-                                        <div class="dropdown dropstart">
-                                            <a class="text-muted text-primary-hover" href="#" role="button"
-                                                id="dropdownTeamOne" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                <i class="icon-xxs" data-feather="more-vertical"></i>
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownTeamOne">
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <a class="dropdown-item" href="#">Something else
-                                                    here</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle">
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <img src="{{ asset('admin_assets/images/avatar/avatar-1.jpg') }}"
-                                                    alt="" class="avatar-md avatar rounded-circle">
-                                            </div>
-                                            <div class="ms-3 lh-1">
-                                                <h5 class=" mb-1">Jitu Chauhan</h5>
-                                                <p class="mb-0">jituchauhan@example.com</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle">Project Director </td>
-                                    <td class="align-middle">Today</td>
-                                    <td class="align-middle">
-                                        <div class="dropdown dropstart">
-                                            <a class="text-muted text-primary-hover" href="#" role="button"
-                                                id="dropdownTeamTwo" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                <i class="icon-xxs" data-feather="more-vertical"></i>
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownTeamTwo">
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <a class="dropdown-item" href="#">Something else
-                                                    here</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle">
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <img src="{{ asset('admin_assets/images/avatar/avatar-3.jpg') }}"
-                                                    alt="" class="avatar-md avatar rounded-circle">
-                                            </div>
-                                            <div class="ms-3 lh-1">
-                                                <h5 class=" mb-1">Sandeep Chauhan</h5>
-                                                <p class="mb-0">sandeepchauhan@example.com</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle">Full- Stack Developer</td>
-                                    <td class="align-middle">Yesterday</td>
-                                    <td class="align-middle">
-                                        <div class="dropdown dropstart">
-                                            <a class="text-muted text-primary-hover" href="#" role="button"
-                                                id="dropdownTeamThree" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                <i class="icon-xxs" data-feather="more-vertical"></i>
-                                            </a>
-
-                                            <div class="dropdown-menu" aria-labelledby="dropdownTeamThree">
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <a class="dropdown-item" href="#">Something else
-                                                    here</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle">
-                                        <div class="d-flex align-items-center">
-
-                                            <div>
-                                                <img src="{{ asset('admin_assets/images/avatar/avatar-4.jpg') }}"
-                                                    alt="" class="avatar-md avatar rounded-circle">
-                                            </div>
-
-                                            <div class="ms-3 lh-1">
-                                                <h5 class=" mb-1">Amanda Darnell</h5>
-                                                <p class="mb-0">amandadarnell@example.com</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle">Digital Marketer</td>
-                                    <td class="align-middle">3 May, 2023</td>
-                                    <td class="align-middle">
-                                        <div class="dropdown dropstart">
-                                            <a class="text-muted text-primary-hover" href="#" role="button"
-                                                id="dropdownTeamFour" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                <i class="icon-xxs" data-feather="more-vertical"></i>
-                                            </a>
-
-                                            <div class="dropdown-menu" aria-labelledby="dropdownTeamFour">
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <a class="dropdown-item" href="#">Something else
-                                                    here</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-
-                                    <td class="align-middle">
-                                        <div class="d-flex align-items-center">
-
-                                            <div>
-                                                <img src="{{ asset('admin_assets/images/avatar/avatar-5.jpg') }}"
-                                                    alt="" class="avatar-md avatar rounded-circle">
-                                            </div>
-
-                                            <div class="ms-3 lh-1">
-                                                <h5 class=" mb-1">Patricia Murrill</h5>
-                                                <p class="mb-0">patriciamurrill@example.com</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle">Account Manager</td>
-                                    <td class="align-middle">3 May, 2023</td>
-                                    <td class="align-middle">
-                                        <div class="dropdown dropstart">
-                                            <a class="text-muted text-primary-hover" href="#" role="button"
-                                                id="dropdownTeamFive" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                <i class="icon-xxs" data-feather="more-vertical"></i>
-                                            </a>
-
-                                            <div class="dropdown-menu" aria-labelledby="dropdownTeamFive">
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <a class="dropdown-item" href="#">Something else
-                                                    here</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle border-bottom-0">
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <img src="{{ asset('admin_assets/images/avatar/avatar-6.jpg') }}"
-                                                    alt="" class="avatar-md avatar rounded-circle">
-                                            </div>
-                                            <div class="ms-3 lh-1">
-                                                <h5 class=" mb-1">Darshini Nair</h5>
-                                                <p class="mb-0">darshininair@example.com</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle border-bottom-0">Front End Developer</td>
-                                    <td class="align-middle border-bottom-0">3 May, 2023</td>
-                                    <td class="align-middle border-bottom-0">
-                                        <div class="dropdown dropstart">
-                                            <a class="text-muted text-primary-hover" href="#" role="button"
-                                                id="dropdownTeamSix" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                <i class="icon-xxs" data-feather="more-vertical"></i>
-                                            </a>
-
-                                            <div class="dropdown-menu" aria-labelledby="dropdownTeamSix">
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <a class="dropdown-item" href="#">Something else
-                                                    here</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="overflow-x-auto">
+                @php $recentBookings = \App\Models\Booking::with(['user','room'])->latest()->take(5)->get(); @endphp
+                <table class="w-full text-left min-w-max">
+                    <thead><tr class="text-xs text-slate-500 font-bold uppercase tracking-widest border-b border-slate-100">
+                        <th class="px-8 py-4">Peminjam</th>
+                        <th class="px-6 py-4">Ruangan</th>
+                        <th class="px-6 py-4">Tanggal</th>
+                        <th class="px-6 py-4 text-center">Status</th>
+                    </tr></thead>
+                    <tbody class="divide-y divide-slate-50 text-sm">
+                        @forelse($recentBookings as $booking)
+                            <tr class="hover:bg-slate-50/80 transition-colors">
+                                <td class="px-8 py-4 font-semibold text-slate-800">{{ $booking->user->name }}</td>
+                                <td class="px-6 py-4 text-slate-600">{{ $booking->room->name }}</td>
+                                <td class="px-6 py-4 text-slate-600">{{ $booking->booking_date->format('d M Y') }}</td>
+                                <td class="px-6 py-4 text-center">
+                                    @php $c = ['pending'=>'gold','approved'=>'success','rejected'=>'danger','finished'=>'sky'][$booking->status] ?? 'slate'; @endphp
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-{{ $c }}-100 text-{{ $c }}-700 border border-{{ $c }}-200">{{ $booking->status_label }}</span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="4" class="px-8 py-12 text-center text-slate-400">Belum ada peminjaman.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+    <style>@keyframes fade-in{0%{opacity:0;transform:translateY(10px);}100%{opacity:1;transform:translateY(0);}}.animate-fade-in{animation:fade-in .5s cubic-bezier(.16,1,.3,1) forwards;}</style>
 @endsection
