@@ -2,10 +2,22 @@
     $paddingClass = $depth == 0 ? 'p-4' : 'p-3 pl-12 bg-slate-50/50 border-t border-slate-100';
 @endphp
 
-<li class="relative border-b border-slate-100 last:border-0 group transition-colors">
+<li class="relative border-b border-slate-100 last:border-0 group transition-colors" data-id="{{ $menu->id }}">
     <div
         class="{{ $paddingClass }} flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:bg-slate-50/80 transition-colors">
         <div class="flex items-center gap-4">
+            <!-- Drag Handle -->
+            <div class="drag-handle cursor-grab active:cursor-grabbing p-1 rounded-lg text-slate-300 hover:text-slate-500 hover:bg-slate-100 transition-colors"
+                title="Drag to reorder">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="9" cy="5" r="1.5" />
+                    <circle cx="15" cy="5" r="1.5" />
+                    <circle cx="9" cy="12" r="1.5" />
+                    <circle cx="15" cy="12" r="1.5" />
+                    <circle cx="9" cy="19" r="1.5" />
+                    <circle cx="15" cy="19" r="1.5" />
+                </svg>
+            </div>
             <!-- Icon/Indicator -->
             @if($depth == 0)
                 <div
@@ -53,7 +65,7 @@
                         </span>
                     @endif
 
-                    <span class="inline-flex items-center gap-1">
+                    <span class="sort-order-label inline-flex items-center gap-1">
                         <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
@@ -99,7 +111,7 @@
 
     <!-- Recursive Call for Children -->
     @if($menu->children->count())
-        <ul class="block w-full border-t border-slate-100">
+        <ul class="sortable-child-list block w-full border-t border-slate-100">
             @foreach($menu->children as $child)
                 @include('admin.menus.partials.menu-item', ['menu' => $child, 'depth' => $depth + 1])
             @endforeach

@@ -35,6 +35,7 @@ Route::middleware(['auth', 'user-role:admin,admin-fakultas'])->prefix('admin')->
     Route::resource('roles', App\Http\Controllers\RoleController::class);
 
     // Menu Management
+    Route::post('menus/reorder', [App\Http\Controllers\Admin\MenuController::class, 'reorder'])->name('menus.reorder');
     Route::resource('menus', App\Http\Controllers\Admin\MenuController::class);
 
     // Profile

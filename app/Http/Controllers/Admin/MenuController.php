@@ -166,4 +166,24 @@ class MenuController extends Controller
             ->route('admin.menus.index')
             ->with('success', 'Menu deleted successfully.');
     }
+
+    /**
+     * Reorder menus via drag-and-drop.
+     */
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'order' => 'required|array',
+            'order.*.id' => 'required|integer|exists:menus,id',
+            'order.*.sort_order' => 'required|integer|min:0',
+        ]);
+
+        \DB::transaction(function () use ($request) {
+            foreach ($request->order as $item) {
+                Menu::where('id', $item['id'])->update(['sort_order' => $item['sort_order']]);
+            }
+        });
+
+        return response()->json(['success' => true]);
+    }
 }
