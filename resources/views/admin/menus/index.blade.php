@@ -252,11 +252,21 @@
                         .then(data => {
                             if (data.success) {
                                 showToast('Urutan menu berhasil diperbarui!', 'success');
-                                // Update sort order display
+                                // Update local sort order display
                                 items.forEach((el, index) => {
                                     const sortLabel = el.querySelector('.sort-order-label');
                                     if (sortLabel) sortLabel.textContent = 'Urutan: ' + index;
                                 });
+
+                                // Refresh sidebar HTML in real-time
+                                fetch('{{ route("menus.search") }}')
+                                    .then(res => res.text())
+                                    .then(html => {
+                                        const sidebarNav = document.querySelector('aside nav');
+                                        if (sidebarNav) {
+                                            sidebarNav.innerHTML = html;
+                                        }
+                                    });
                             }
                         })
                         .catch(() => showToast('Gagal menyimpan urutan.', 'error'));
@@ -279,12 +289,12 @@
             toast.id = 'reorder-toast';
             toast.className = `fixed bottom-6 right-6 z-[9999] px-5 py-3 rounded-xl text-white text-sm font-semibold shadow-2xl ${colors[type]} transition-all transform translate-y-0 opacity-100`;
             toast.innerHTML = `
-                        <div class="flex items-center gap-2">
-                            ${type === 'success' ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : ''}
-                            ${type === 'info' ? '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>' : ''}
-                            <span>${message}</span>
-                        </div>
-                    `;
+                            <div class="flex items-center gap-2">
+                                ${type === 'success' ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : ''}
+                                ${type === 'info' ? '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>' : ''}
+                                <span>${message}</span>
+                            </div>
+                        `;
             document.body.appendChild(toast);
 
             if (type !== 'info') {
