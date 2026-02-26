@@ -13,23 +13,24 @@ class UserRoleMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next,$role): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
         if (!Auth::check()) {
-            return response()->json(['You do not have permission to access for this page']);
+            abort(403, 'You do not have permission to access this page.');
         }
 
-        $allowed = collect(preg_split('/[|,]/', (string) $role))
-            ->map(fn ($value) => trim($value))
+        $allowed = collect($roles)
+            ->flatMap(fn($r) => preg_split('/[|,]/', (string) $r))
+            ->map(fn($value) => trim($value))
             ->filter();
 
         if ($allowed->isEmpty()) {
-            return response()->json(['You do not have permission to access for this page']);
+            abort(403, 'You do not have permission to access this page.');
         }
 
         if ($allowed->contains(Auth::user()->role?->slug)) {
             return $next($request);
         }
-        return response()->json(['You do not have permission to access for this page']);
+        abort(403, 'You do not have permission to access this page.');
     }
 }

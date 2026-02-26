@@ -64,7 +64,8 @@
                 </form>
             </div>
 
-            <div class="overflow-x-auto">
+            <!-- Desktop Table -->
+            <div class="overflow-x-auto hidden md:block">
                 <table class="w-full text-left border-collapse min-w-max">
                     <thead><tr class="bg-white border-b border-slate-100 text-slate-500 text-xs font-bold uppercase tracking-widest">
                         <th class="px-8 py-5 w-16 text-center">#</th>
@@ -110,8 +111,35 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Mobile Card View -->
+            <div class="md:hidden divide-y divide-slate-100">
+                @forelse($bookings as $booking)
+                    @php $c = ['pending'=>'amber','approved'=>'emerald','rejected'=>'rose','finished'=>'sky'][$booking->status] ?? 'slate'; @endphp
+                    <a href="{{ route('admin.bookings.show', $booking) }}" class="block p-4 hover:bg-slate-50 transition-colors active:bg-slate-100">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-navy-500 to-navy-700 text-white flex items-center justify-center font-bold text-xs shrink-0">{{ strtoupper(substr($booking->user->name, 0, 1)) }}</div>
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-800">{{ $booking->user->name }}</p>
+                                    <p class="text-xs text-slate-400">{{ $booking->room->name }} · <span class="font-mono">{{ $booking->room->code }}</span></p>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-{{ $c }}-100 text-{{ $c }}-700 border border-{{ $c }}-200 shrink-0">{{ $booking->status_label }}</span>
+                        </div>
+                        <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500 pl-10 mb-1">
+                            <span>📅 {{ $booking->booking_date->format('d M Y') }}</span>
+                            <span class="font-mono">🕐 {{ \Carbon\Carbon::parse($booking->start_time)->format('H:i') }}–{{ \Carbon\Carbon::parse($booking->end_time)->format('H:i') }}</span>
+                        </div>
+                        <p class="text-xs text-slate-400 pl-10 line-clamp-1">{{ $booking->purpose }}</p>
+                    </a>
+                @empty
+                    <div class="p-8 text-center text-slate-400 text-sm">Belum ada peminjaman yang diajukan.</div>
+                @endforelse
+            </div>
+
             @if($bookings->hasPages())
-                <div class="px-8 py-4 border-t border-slate-100 bg-slate-50/50">{{ $bookings->links('pagination::tailwind') }}</div>
+                <div class="px-6 sm:px-8 py-4 border-t border-slate-100 bg-slate-50/50">{{ $bookings->links('pagination::tailwind') }}</div>
             @endif
         </div>
     </div>

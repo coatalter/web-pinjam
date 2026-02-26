@@ -19,7 +19,7 @@
             </a>
             <div class="flex items-center gap-3">
                 @auth
-                    <a href="{{ auth()->user()->role?->slug === 'admin' ? route('admin.home') : route('home') }}"
+                    <a href="{{ in_array(auth()->user()->role?->slug, ['admin', 'admin-fakultas']) ? route('admin.home') : route('home') }}"
                        class="px-5 py-2 text-sm font-bold text-navy-900 bg-gold-500 rounded-xl hover:bg-gold-400 transition-all shadow-lg shadow-gold-500/20">
                         Dashboard
                     </a>
@@ -41,6 +41,12 @@
             <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-r from-navy-500/20 via-navy-600/15 to-navy-700/20 rounded-full blur-[120px]"></div>
             <div class="absolute bottom-0 left-0 w-[400px] h-[300px] bg-gold-500/10 rounded-full blur-[100px]"></div>
             <div class="absolute top-20 right-0 w-[300px] h-[300px] bg-navy-400/10 rounded-full blur-[100px]"></div>
+            <!-- Floating Particles -->
+            <div class="absolute top-[15%] left-[10%] w-2 h-2 bg-gold-400/30 rounded-full animate-float-slow"></div>
+            <div class="absolute top-[40%] right-[15%] w-1.5 h-1.5 bg-navy-400/40 rounded-full animate-float-medium"></div>
+            <div class="absolute bottom-[30%] left-[20%] w-1 h-1 bg-gold-500/20 rounded-full animate-float-fast"></div>
+            <div class="absolute top-[60%] right-[25%] w-2.5 h-2.5 bg-navy-300/20 rounded-full animate-float-slow" style="animation-delay: 2s;"></div>
+            <div class="absolute top-[25%] right-[35%] w-1.5 h-1.5 bg-gold-400/25 rounded-full animate-float-medium" style="animation-delay: 1s;"></div>
         </div>
         <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22%3E%3Cpath d=%22M0 0h60v60H0z%22 fill=%22none%22 stroke=%22white%22 stroke-width=%220.5%22/%3E%3C/svg%3E');"></div>
 
@@ -59,7 +65,7 @@
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                 @auth
-                    <a href="{{ auth()->user()->role?->slug === 'admin' ? route('admin.home') : route('home') }}"
+                    <a href="{{ in_array(auth()->user()->role?->slug, ['admin', 'admin-fakultas']) ? route('admin.home') : route('home') }}"
                        class="group px-8 py-3.5 text-sm font-bold text-navy-900 bg-gold-500 rounded-2xl hover:bg-gold-400 transition-all shadow-xl shadow-gold-500/25 transform hover:-translate-y-0.5 flex items-center gap-2">
                         Masuk Dashboard
                         <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -92,7 +98,7 @@
                     ['icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', 'title' => 'Approval Cepat', 'desc' => 'Sistem persetujuan terintegrasi oleh admin dengan deteksi konflik otomatis.', 'color' => 'success'],
                     ['icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5', 'title' => 'Kelola Ruangan', 'desc' => 'Data ruangan lengkap dengan kapasitas, fasilitas, dan jadwal ketersediaan.', 'color' => 'navy'],
                 ] as $feature)
-                    <div class="group relative rounded-2xl bg-white/[0.03] border border-white/[0.06] p-8 hover:bg-white/[0.06] hover:border-white/10 transition-all duration-300">
+                    <div class="group relative rounded-2xl bg-white/[0.03] border border-white/[0.06] p-8 hover:bg-white/[0.06] hover:border-white/10 transition-all duration-300 hover:shadow-lg hover:shadow-white/5 hover:-translate-y-1">
                         <div class="w-12 h-12 rounded-2xl bg-{{ $feature['color'] }}-500/10 border border-{{ $feature['color'] }}-500/20 flex items-center justify-center text-{{ $feature['color'] }}-400 mb-5">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $feature['icon'] }}"></path></svg>
                         </div>
@@ -116,5 +122,14 @@
             <p class="text-xs text-slate-600">Universitas Palangka Raya</p>
         </div>
     </footer>
+
+    <style>
+        @keyframes float-slow { 0%,100% { transform: translateY(0) translateX(0); } 25% { transform: translateY(-20px) translateX(10px); } 50% { transform: translateY(-10px) translateX(-5px); } 75% { transform: translateY(-25px) translateX(5px); } }
+        @keyframes float-medium { 0%,100% { transform: translateY(0) translateX(0); } 33% { transform: translateY(-15px) translateX(-8px); } 66% { transform: translateY(-8px) translateX(12px); } }
+        @keyframes float-fast { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
+        .animate-float-medium { animation: float-medium 6s ease-in-out infinite; }
+        .animate-float-fast { animation: float-fast 4s ease-in-out infinite; }
+    </style>
 </body>
 </html>

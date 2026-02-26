@@ -43,15 +43,17 @@
 
         <!-- My Recent Bookings -->
         <div class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden">
-            <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+            <div class="px-6 sm:px-8 py-5 sm:py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                 <div>
                     <h3 class="text-lg font-bold text-slate-800">Peminjaman Terakhir</h3>
-                    <p class="text-sm text-slate-500">Riwayat peminjaman Anda</p>
+                    <p class="text-sm text-slate-500 hidden sm:block">Riwayat peminjaman Anda</p>
                 </div>
                 <a href="{{ route('bookings.index') }}" class="text-sm font-semibold text-navy-600 hover:text-navy-800 transition-colors">Lihat Semua →</a>
             </div>
-            <div class="overflow-x-auto">
-                @php $myRecent = \App\Models\Booking::with('room')->where('user_id', Auth::id())->latest()->take(5)->get(); @endphp
+            @php $myRecent = \App\Models\Booking::with('room')->where('user_id', Auth::id())->latest()->take(5)->get(); @endphp
+
+            <!-- Desktop Table -->
+            <div class="overflow-x-auto hidden md:block">
                 <table class="w-full text-left min-w-max">
                     <thead><tr class="text-xs text-slate-500 font-bold uppercase tracking-widest border-b border-slate-100">
                         <th class="px-8 py-4">Ruangan</th>
@@ -78,6 +80,28 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Mobile Card View -->
+            <div class="md:hidden divide-y divide-slate-100">
+                @forelse($myRecent as $booking)
+                    @php $c = ['pending'=>'gold','approved'=>'success','rejected'=>'danger','finished'=>'sky'][$booking->status] ?? 'slate'; @endphp
+                    <a href="{{ route('bookings.show', $booking) }}" class="block p-4 hover:bg-slate-50/80 transition-colors active:bg-slate-100">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <p class="text-sm font-semibold text-slate-800">{{ $booking->room->name }}</p>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-{{ $c }}-100 text-{{ $c }}-700 border border-{{ $c }}-200">{{ $booking->status_label }}</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-xs text-slate-500">
+                            <span>📅 {{ $booking->booking_date->format('d M Y') }}</span>
+                            <span class="font-mono">🕐 {{ \Carbon\Carbon::parse($booking->start_time)->format('H:i') }}–{{ \Carbon\Carbon::parse($booking->end_time)->format('H:i') }}</span>
+                        </div>
+                    </a>
+                @empty
+                    <div class="p-8 text-center text-slate-400 text-sm">
+                        <p class="mb-2">Belum ada peminjaman.</p>
+                        <a href="{{ route('bookings.create') }}" class="text-navy-600 font-semibold hover:underline">Ajukan Peminjaman →</a>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>

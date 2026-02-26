@@ -42,15 +42,17 @@
 
         <!-- Recent Bookings -->
         <div class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden">
-            <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+            <div class="px-6 sm:px-8 py-5 sm:py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                 <div>
                     <h3 class="text-lg font-bold text-slate-800">Peminjaman Terbaru</h3>
-                    <p class="text-sm text-slate-500">5 peminjaman terakhir yang masuk</p>
+                    <p class="text-sm text-slate-500 hidden sm:block">5 peminjaman terakhir yang masuk</p>
                 </div>
                 <a href="{{ route('admin.bookings.index') }}" class="text-sm font-semibold text-navy-600 hover:text-navy-800 transition-colors">Lihat Semua →</a>
             </div>
-            <div class="overflow-x-auto">
-                @php $recentBookings = \App\Models\Booking::with(['user','room'])->latest()->take(5)->get(); @endphp
+            @php $recentBookings = \App\Models\Booking::with(['user','room'])->latest()->take(5)->get(); @endphp
+
+            <!-- Desktop Table -->
+            <div class="overflow-x-auto hidden md:block">
                 <table class="w-full text-left min-w-max">
                     <thead><tr class="text-xs text-slate-500 font-bold uppercase tracking-widest border-b border-slate-100">
                         <th class="px-8 py-4">Peminjam</th>
@@ -74,6 +76,28 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Mobile Card View -->
+            <div class="md:hidden divide-y divide-slate-100">
+                @forelse($recentBookings as $booking)
+                    @php $c = ['pending'=>'gold','approved'=>'success','rejected'=>'danger','finished'=>'sky'][$booking->status] ?? 'slate'; @endphp
+                    <div class="p-4 hover:bg-slate-50/80 transition-colors">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-navy-500 to-navy-700 text-white flex items-center justify-center font-bold text-xs shrink-0">{{ strtoupper(substr($booking->user->name, 0, 1)) }}</div>
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-800">{{ $booking->user->name }}</p>
+                                    <p class="text-xs text-slate-400">{{ $booking->room->name }}</p>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-{{ $c }}-100 text-{{ $c }}-700 border border-{{ $c }}-200">{{ $booking->status_label }}</span>
+                        </div>
+                        <p class="text-xs text-slate-500 pl-10">{{ $booking->booking_date->format('d M Y') }}</p>
+                    </div>
+                @empty
+                    <div class="p-8 text-center text-slate-400 text-sm">Belum ada peminjaman.</div>
+                @endforelse
             </div>
         </div>
     </div>
