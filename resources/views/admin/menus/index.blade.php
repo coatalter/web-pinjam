@@ -13,8 +13,7 @@
                 <nav class="flex" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-1 md:space-x-3 text-sm text-slate-500 font-medium">
                         <li>
-                            <a href="{{ route('admin.home') }}"
-                                class="hover:text-navy-600 transition-colors">Dashboard</a>
+                            <a href="{{ route('admin.home') }}" class="hover:text-navy-600 transition-colors">Dashboard</a>
                         </li>
                         <li><span class="mx-2">/</span></li>
                         <li class="text-navy-600 font-semibold" aria-current="page">Menu</li>
@@ -89,7 +88,7 @@
             <div class="p-6 md:p-8">
                 @if($menus->count() > 0)
                     <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-                        <ul class="divide-y divide-slate-100 overflow-hidden rounded-2xl">
+                        <ul id="sortable-menu-list" class="divide-y divide-slate-100 overflow-hidden rounded-2xl">
                             @foreach($menus as $menu)
                                 @include('admin.menus.partials.menu-item', ['menu' => $menu, 'depth' => 0])
                             @endforeach
@@ -213,6 +212,88 @@
 
         function closeModal() {
             document.getElementById('deleteModal').classList.add('hidden');
+        }
+    </script>
+
+    <!-- SortableJS -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuList = document.getElementById('sortable-menu-list');
+            if (!menuList) return;
+
+            Sortable.create(menuList, {
+                handle: '.drag-handle',
+                animation: 250,
+                easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                ghostClass: 'bg-amber-50',
+                chosenClass: 'shadow-lg',
+                dragClass: 'opacity-70',
+                onEnd: function () {
+                    const items = menuList.querySelectorAll(':scope > li[data-id]');
+                    const order = Array.from(items).map((el, index) => ({
+                        id: parseInt(el.dataset.id),
+                        sort_order: index
+                    }));
+
+                    // Show saving indicator
+                    showToast('Menyimpan urutan...', 'info');
+
+                    fetch('{{ route("admin.menus.reorder") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ order: order })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                showToast('Urutan menu berhasil diperbarui!', 'success');
+                                // Update sort order display
+                                items.forEach((el, index) => {
+                                    const sortLabel = el.querySelector('.sort-order-label');
+                                    if (sortLabel) sortLabel.textContent = 'Urutan: ' + index;
+                                });
+                            }
+                        })
+                        .catch(() => showToast('Gagal menyimpan urutan.', 'error'));
+                }
+            });
+        });
+
+        function showToast(message, type = 'info') {
+            // Remove existing toast
+            const existing = document.getElementById('reorder-toast');
+            if (existing) existing.remove();
+
+            const colors = {
+                success: 'bg-emerald-500',
+                error: 'bg-rose-500',
+                info: 'bg-navy-500'
+            };
+
+            const toast = document.createElement('div');
+            toast.id = 'reorder-toast';
+            toast.className = `fixed bottom-6 right-6 z-[9999] px-5 py-3 rounded-xl text-white text-sm font-semibold shadow-2xl ${colors[type]} transition-all transform translate-y-0 opacity-100`;
+            toast.innerHTML = `
+                        <div class="flex items-center gap-2">
+                            ${type === 'success' ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : ''}
+                            ${type === 'info' ? '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>' : ''}
+                            <span>${message}</span>
+                        </div>
+                    `;
+            document.body.appendChild(toast);
+
+            if (type !== 'info') {
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(10px)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 2500);
+            }
         }
     </script>
 @endsection
