@@ -111,7 +111,7 @@
 
     <!-- Recursive Call for Children -->
     @if($menu->children->count())
-        <ul class="block w-full border-t border-slate-100">
+        <ul class="sortable-child-list block w-full border-t border-slate-100">
             @foreach($menu->children as $child)
                 @include('admin.menus.partials.menu-item', ['menu' => $child, 'depth' => $depth + 1])
             @endforeach

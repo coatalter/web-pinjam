@@ -219,58 +219,66 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const menuList = document.getElementById('sortable-menu-list');
-            if (!menuList) return;
+            const reorderUrl = '{{ route("admin.menus.reorder") }}';
+            const sidebarUrl = '{{ route("admin.menus.search") }}';
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-            Sortable.create(menuList, {
+            function saveOrder(listEl) {
+                const items = listEl.querySelectorAll(':scope > li[data-id]');
+                const order = Array.from(items).map((el, index) => ({
+                    id: parseInt(el.dataset.id),
+                    sort_order: index
+                }));
+
+                showToast('Menyimpan urutan...', 'info');
+
+                fetch(reorderUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ order: order })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast('Urutan menu berhasil diperbarui!', 'success');
+                        items.forEach((el, index) => {
+                            const sortLabel = el.querySelector(':scope > div .sort-order-label');
+                            if (sortLabel) sortLabel.textContent = 'Urutan: ' + index;
+                        });
+                        // Refresh sidebar in real-time
+                        fetch(sidebarUrl)
+                            .then(res => res.text())
+                            .then(html => {
+                                const sidebarNav = document.querySelector('aside nav');
+                                if (sidebarNav) sidebarNav.innerHTML = html;
+                            });
+                    }
+                })
+                .catch(() => showToast('Gagal menyimpan urutan.', 'error'));
+            }
+
+            const sortableOpts = {
                 handle: '.drag-handle',
                 animation: 250,
                 easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
                 ghostClass: 'bg-amber-50',
                 chosenClass: 'shadow-lg',
                 dragClass: 'opacity-70',
-                onEnd: function () {
-                    const items = menuList.querySelectorAll(':scope > li[data-id]');
-                    const order = Array.from(items).map((el, index) => ({
-                        id: parseInt(el.dataset.id),
-                        sort_order: index
-                    }));
+            };
 
-                    // Show saving indicator
-                    showToast('Menyimpan urutan...', 'info');
+            // Parent list
+            const menuList = document.getElementById('sortable-menu-list');
+            if (menuList) {
+                Sortable.create(menuList, { ...sortableOpts, onEnd: () => saveOrder(menuList) });
+            }
 
-                    fetch('{{ route("admin.menus.reorder") }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({ order: order })
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                showToast('Urutan menu berhasil diperbarui!', 'success');
-                                // Update local sort order display
-                                items.forEach((el, index) => {
-                                    const sortLabel = el.querySelector('.sort-order-label');
-                                    if (sortLabel) sortLabel.textContent = 'Urutan: ' + index;
-                                });
-
-                                // Refresh sidebar HTML in real-time
-                                fetch('{{ route("menus.search") }}')
-                                    .then(res => res.text())
-                                    .then(html => {
-                                        const sidebarNav = document.querySelector('aside nav');
-                                        if (sidebarNav) {
-                                            sidebarNav.innerHTML = html;
-                                        }
-                                    });
-                            }
-                        })
-                        .catch(() => showToast('Gagal menyimpan urutan.', 'error'));
-                }
+            // Child lists
+            document.querySelectorAll('.sortable-child-list').forEach(childList => {
+                Sortable.create(childList, { ...sortableOpts, onEnd: () => saveOrder(childList) });
             });
         });
 
