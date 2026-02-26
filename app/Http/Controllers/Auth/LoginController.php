@@ -46,22 +46,17 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
-        {
-                        if (auth()->user()->role?->slug === 'admin')
-            {
-              return redirect()->route('admin.home');
+        if (auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))) {
+            $roleSlug = auth()->user()->role?->slug;
+            if (in_array($roleSlug, ['admin', 'admin-fakultas'])) {
+                return redirect()->route('admin.home');
+            } else {
+                return redirect()->route('home');
             }
-            else
-            {
-              return redirect()->route('home');
-            }
-        }
-        else
-        {
+        } else {
             return redirect()
-            ->route('login')
-            ->with('error','Incorrect email or password!.');
+                ->route('login')
+                ->with('error', 'Incorrect email or password!.');
         }
     }
 }

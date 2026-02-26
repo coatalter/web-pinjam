@@ -1,7 +1,24 @@
 @if($menu->children && $menu->children->count() > 0)
     {{-- Parent menu with children --}}
-    <div
-        x-data="{ open: {{ request()->routeIs(collect($menu->children)->pluck('route_name')->filter()->map(fn($r) => $r . '*')->join(',')) ? 'true' : 'false' }} }">
+    @php
+        $childNames = $menu->children->pluck('name')->map(function ($name) {
+            return strtolower($name); })->toJson();
+    @endphp
+    <div x-data="{ 
+                open: {{ request()->routeIs(collect($menu->children)->pluck('route_name')->filter()->map(fn($r) => $r . '*')->join(',')) ? 'true' : 'false' }},
+                menuName: '{{ strtolower($menu->name) }}',
+                childNames: {{ $childNames }},
+                get isVisible() {
+                    if (searchQuery === '') return true;
+                    const query = searchQuery.toLowerCase();
+                    const matchesParent = this.menuName.includes(query);
+                    const matchesChild = this.childNames.some(name => name.includes(query));
+                    if (matchesChild && searchQuery !== '') {
+                        this.open = true; // Auto-expand if child matches
+                    }
+                    return matchesParent || matchesChild;
+                }
+            }" x-show="isVisible">
         <button @click="open = !open"
             class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-navy-100 hover:text-white hover:bg-navy-400/40 transition-all group">
             <span class="flex items-center gap-3">
@@ -33,7 +50,8 @@
             $href = $menu->url;
         }
     @endphp
-    <a href="{{ $href }}"
+    <a href="{{ $href }}" x-data="{ menuName: '{{ strtolower($menu->name) }}' }"
+        x-show="searchQuery === '' || menuName.includes(searchQuery.toLowerCase())"
         class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all {{ $isActive ? 'bg-gold-500 text-navy-900 shadow-sm' : 'text-navy-100 hover:text-white hover:bg-navy-400/40' }}">
         @if($menu->icon)
             <i data-feather="{{ $menu->icon }}"
