@@ -53,4 +53,8 @@ Route::middleware(['auth', 'user-role:admin,admin-fakultas'])->prefix('admin')->
     Route::get('/bookings/{booking}', [App\Http\Controllers\Admin\BookingApprovalController::class, 'show'])->name('bookings.show');
     Route::patch('/bookings/{booking}/approve', [App\Http\Controllers\Admin\BookingApprovalController::class, 'approve'])->name('bookings.approve');
     Route::patch('/bookings/{booking}/reject', [App\Http\Controllers\Admin\BookingApprovalController::class, 'reject'])->name('bookings.reject');
+
+    //Search
+    Route::get('/menu-search', [MenuController::class, 'search'])
+        ->name('menus.search');
 });

@@ -24,6 +24,30 @@ class MenuController extends Controller
         return view('admin.menus.index', compact('menus', 'roles'));
     }
 
+    /**Search */
+    public function search(Request $request)
+    {
+        $query = $request->query('q');
+
+        // Kalau kosong, render ulang seperti default
+        if (!$query) {
+            $dynamicMenus = Menu::whereNull('parent_id')
+                ->where('context', 'admin')
+                ->with('children') // penting!
+                ->orderBy('sort_order')
+                ->get();
+
+            return view('layouts.partials.admin.menu-default', compact('dynamicMenus'));
+        }
+
+        $menus = Menu::where('context', 'admin')
+            ->where('name', 'like', '%' . $query . '%')
+            ->orderBy('sort_order')
+            ->get();
+
+        return view('layouts.partials.admin.menu-search-result', compact('menus'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

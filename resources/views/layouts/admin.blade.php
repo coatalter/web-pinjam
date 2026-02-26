@@ -16,8 +16,7 @@
         @include('layouts.partials.admin.navbar-vertical-admin')
 
         <!-- Main content -->
-        <div class="flex-1 flex flex-col min-h-screen transition-all duration-300"
-            :class="sidebarOpen ? 'lg:ml-64' : 'lg:ml-0'">
+        <div class="flex-1 flex flex-col min-h-screen transition-all duration-300" :class="sidebarOpen ? 'lg:ml-64' : 'lg:ml-0'">
             @include('layouts.partials.admin.header')
 
             <main class="flex-1 p-6 lg:p-8">
@@ -32,6 +31,38 @@
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script>document.addEventListener('DOMContentLoaded', () => feather.replace());</script>
     @stack('scripts')
+
+    <script>
+        const searchInput = document.getElementById('menu-search');
+        const sidebarMenu = document.getElementById('sidebar-menu');
+
+        if (searchInput) {
+
+            let debounceTimer;
+
+            searchInput.addEventListener('keyup', function () {
+
+                clearTimeout(debounceTimer);
+
+                debounceTimer = setTimeout(() => {
+
+                    let query = this.value.trim();
+
+                    fetch("{{ route('admin.menus.search') }}?q=" + query)
+                        .then(res => res.text())
+                        .then(data => {
+                            sidebarMenu.innerHTML = data;
+
+                            if (typeof feather !== "undefined") {
+                                feather.replace();
+                            }
+                        });
+
+                }, 300);
+
+            });
+        }
+    </script>
 </body>
 
 </html>

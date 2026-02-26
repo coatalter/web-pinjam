@@ -16,8 +16,14 @@
         <span class="ml-auto text-[10px] font-bold bg-gold-500 text-navy-900 px-1.5 py-0.5 rounded">ADMIN</span>
     </div>
 
+    <!-- Search -->
+    <div class="px-4 py-3 border-b border-navy-400/20">
+        <input type="text" id="menu-search" placeholder="Search menu..."
+            class="w-full px-3 py-2 rounded-lg bg-navy-600 text-white placeholder-navy-200 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400">
+    </div>
+
     <!-- Nav -->
-    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+    <nav id="sidebar-menu" class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
         @foreach(($dynamicMenus ?? collect()) as $menu)
             @include('layouts.partials.admin.menu-item', ['menu' => $menu])
         @endforeach
