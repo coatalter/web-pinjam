@@ -27,7 +27,7 @@ class BookingApprovalController extends Controller
         $bookings = $query->orderByRaw("FIELD(status, 'pending', 'approved', 'rejected', 'finished')")
             ->orderByDesc('created_at')
             ->paginate(15)
-            ->withQueryString();
+            ->appends(request()->query());
 
         $stats = [
             'pending' => Booking::where('status', 'pending')->count(),
@@ -51,6 +51,13 @@ class BookingApprovalController extends Controller
         if ($booking->status !== 'pending') {
             return redirect()->route('admin.bookings.show', $booking)
                 ->with('error', 'Hanya peminjaman dengan status "Menunggu" yang dapat disetujui.');
+        }
+
+        // Scope validation: Admin Fakultas can only approve their own faculty's rooms
+        if (auth()->user()->role?->slug === 'admin-fakultas') {
+            if ($booking->room->scope !== 'fakultas-teknik') {
+                abort(403, 'Anda tidak memiliki hak akses untuk menyetujui peminjaman ruangan tingkat Universitas/Lab Terpadu.');
+            }
         }
 
         // Check for conflicts

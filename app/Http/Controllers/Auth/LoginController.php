@@ -48,7 +48,7 @@ class LoginController extends Controller
 
         if (auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))) {
             $roleSlug = auth()->user()->role?->slug;
-            if (in_array($roleSlug, ['admin', 'admin-fakultas'])) {
+            if (in_array($roleSlug, ['admin', 'admin-fakultas', 'admin-lab', 'penguji', 'reviewer'])) {
                 return redirect()->route('admin.home');
             } else {
                 return redirect()->route('home');
