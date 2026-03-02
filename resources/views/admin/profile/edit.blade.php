@@ -39,9 +39,9 @@
                             @if ($user->avatar)
                                 <img src="{{ Storage::url($user->avatar) }}" alt="Avatar" class="w-full h-full object-cover">
                             @else
-                                <img src="{{ Avatar::create($user->name)->toBase64() }}" alt="Avatar"
-                                    class="w-full h-full object-cover">
-                            @endif
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=0D8ABC&color=fff"
+                                        alt="Avatar" class="w-full h-full object-cover">
+                                @endif
                         </div>
                         <!-- Upload overlay -->
                         <label for="avatar_upload"
