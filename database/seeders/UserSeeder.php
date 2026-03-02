@@ -31,6 +31,26 @@ class UserSeeder extends Seeder
                 'email' => 'andi@student.upr.ac.id',
                 'role' => 'mahasiswa',
             ],
+            [
+                'name' => 'Admin Lab Terpadu',
+                'email' => 'admin-lab@univ.edu',
+                'role' => 'admin-lab',
+            ],
+            [
+                'name' => 'Analis Lab',
+                'email' => 'penguji@univ.edu',
+                'role' => 'penguji',
+            ],
+            [
+                'name' => 'Reviewer Lab',
+                'email' => 'reviewer@univ.edu',
+                'role' => 'reviewer',
+            ],
+            [
+                'name' => 'Pemohon Umum',
+                'email' => 'pemohon@univ.edu',
+                'role' => 'pemohon',
+            ],
         ];
 
         foreach ($users as $data) {

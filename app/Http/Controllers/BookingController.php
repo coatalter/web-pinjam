@@ -59,10 +59,16 @@ class BookingController extends Controller
                 ->with('error', 'Ruangan sudah di-booking pada tanggal dan jam tersebut. Silakan pilih waktu lain.');
         }
 
-        $validated['user_id'] = auth()->id();
-        $validated['status'] = 'pending';
-
-        Booking::create($validated);
+        Booking::create([
+            'user_id' => auth()->id(),
+            'room_id' => $validated['room_id'],
+            'booking_date' => $validated['booking_date'],
+            'start_time' => $validated['start_time'],
+            'end_time' => $validated['end_time'],
+            'purpose' => $validated['purpose'],
+            'notes' => $validated['notes'] ?? null,
+            'status' => 'pending',
+        ]);
 
         return redirect()->route('bookings.index')
             ->with('success', 'Peminjaman berhasil diajukan! Menunggu persetujuan admin.');

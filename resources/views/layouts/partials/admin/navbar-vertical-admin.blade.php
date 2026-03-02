@@ -5,12 +5,8 @@
 
     <!-- Brand -->
     <div class="flex items-center gap-3 px-6 h-16 border-b border-navy-400/30">
-        <div class="w-8 h-8 rounded-lg bg-navy-700 flex items-center justify-center border border-gold-400/40">
-            <svg class="w-4 h-4 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
-                </path>
-            </svg>
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center">
+            @include('layouts.partials.admin.logo')
         </div>
         <span class="text-lg font-extrabold text-white tracking-tight">PinRuang</span>
         <span class="ml-auto text-[10px] font-bold bg-gold-500 text-navy-900 px-1.5 py-0.5 rounded">ADMIN</span>

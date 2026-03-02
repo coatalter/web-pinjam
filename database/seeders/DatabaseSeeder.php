@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             MenuSeeder::class,
             RoomSeeder::class,
+            EquipmentSeeder::class,
+            TestParameterSeeder::class,
         ]);
     }
 }
