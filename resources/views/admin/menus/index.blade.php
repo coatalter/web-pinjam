@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-8 animate-fade-in">
+    <div class="space-y-8 ">
         <!-- Header -->
         <div
             class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden">
@@ -33,7 +33,7 @@
 
         <!-- Alert Messages -->
         @if(session('success'))
-            <div class="p-4 mb-4 text-sm text-emerald-800 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between shadow-sm animate-fade-in"
+            <div class="p-4 mb-4 text-sm text-emerald-800 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between shadow-sm "
                 role="alert" id="successAlert">
                 <div class="flex items-center">
                     <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
@@ -56,7 +56,7 @@
         @endif
 
         @if(session('error'))
-            <div class="p-4 mb-4 text-sm text-rose-800 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-between shadow-sm animate-fade-in"
+            <div class="p-4 mb-4 text-sm text-rose-800 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-between shadow-sm "
                 role="alert" id="errorAlert">
                 <div class="flex items-center">
                     <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
@@ -180,7 +180,7 @@
             }
         }
 
-        .animate-fade-in {
+        . {
             animation: fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
@@ -215,10 +215,13 @@
         }
     </script>
 
-    <!-- SortableJS -->
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        function initializeSortable() {
+            if (typeof Sortable === 'undefined') {
+                setTimeout(initializeSortable, 50);
+                return;
+            }
+
             const reorderUrl = '{{ route("admin.menus.reorder") }}';
             const sidebarUrl = '{{ route("admin.menus.search") }}';
             const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -241,24 +244,32 @@
                     },
                     body: JSON.stringify({ order: order })
                 })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        showToast('Urutan menu berhasil diperbarui!', 'success');
-                        items.forEach((el, index) => {
-                            const sortLabel = el.querySelector(':scope > div .sort-order-label');
-                            if (sortLabel) sortLabel.textContent = 'Urutan: ' + index;
-                        });
-                        // Refresh sidebar in real-time
-                        fetch(sidebarUrl)
-                            .then(res => res.text())
-                            .then(html => {
-                                const sidebarNav = document.querySelector('aside nav');
-                                if (sidebarNav) sidebarNav.innerHTML = html;
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            showToast('Urutan menu berhasil diperbarui!', 'success');
+                            items.forEach((el, index) => {
+                                const sortLabel = el.querySelector(':scope > div .sort-order-label');
+                                if (sortLabel) sortLabel.textContent = 'Urutan: ' + index;
                             });
-                    }
-                })
-                .catch(() => showToast('Gagal menyimpan urutan.', 'error'));
+                            // Refresh sidebar in real-time
+                            fetch(sidebarUrl)
+                                .then(res => res.text())
+                                .then(html => {
+                                    const sidebarNav = document.querySelector('aside nav');
+                                    if (sidebarNav) {
+                                        sidebarNav.innerHTML = html;
+                                        if (typeof htmx !== 'undefined') {
+                                            htmx.process(sidebarNav);
+                                        }
+                                        if (typeof feather !== 'undefined') {
+                                            feather.replace();
+                                        }
+                                    }
+                                });
+                        }
+                    })
+                    .catch(() => showToast('Gagal menyimpan urutan.', 'error'));
             }
 
             const sortableOpts = {
@@ -280,7 +291,10 @@
             document.querySelectorAll('.sortable-child-list').forEach(childList => {
                 Sortable.create(childList, { ...sortableOpts, onEnd: () => saveOrder(childList) });
             });
-        });
+        }
+
+        // Initialize immediately
+        initializeSortable();
 
         function showToast(message, type = 'info') {
             // Remove existing toast
@@ -297,12 +311,12 @@
             toast.id = 'reorder-toast';
             toast.className = `fixed bottom-6 right-6 z-[9999] px-5 py-3 rounded-xl text-white text-sm font-semibold shadow-2xl ${colors[type]} transition-all transform translate-y-0 opacity-100`;
             toast.innerHTML = `
-                            <div class="flex items-center gap-2">
-                                ${type === 'success' ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : ''}
-                                ${type === 'info' ? '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>' : ''}
-                                <span>${message}</span>
-                            </div>
-                        `;
+                <div class="flex items-center gap-2">
+                    ${type === 'success' ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : ''}
+                    ${type === 'info' ? '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>' : ''}
+                    <span>${message}</span>
+                </div>
+            `;
             document.body.appendChild(toast);
 
             if (type !== 'info') {

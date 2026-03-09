@@ -8,7 +8,7 @@
         <div class="w-8 h-8 rounded-lg flex items-center justify-center">
             @include('layouts.partials.admin.logo')
         </div>
-        <span class="text-lg font-extrabold text-white tracking-tight">PinRuang</span>
+        <span class="text-lg font-extrabold text-white tracking-tight">Si-Labu</span>
         <span class="ml-auto text-[10px] font-bold bg-gold-500 text-navy-900 px-1.5 py-0.5 rounded">ADMIN</span>
     </div>
 
@@ -29,7 +29,7 @@
         </div>
 
         <!-- Nav -->
-        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+        <nav id="sidebar-menu" class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
             @foreach(($dynamicMenus ?? collect()) as $menu)
                 @include('layouts.partials.admin.menu-item', ['menu' => $menu])
             @endforeach

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-8 animate-fade-in">
+    <div class="space-y-8 ">
         <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl">
             <h1 class="text-3xl font-extrabold text-slate-800 mb-1">{{ $testRequest->request_code }}</h1>
             <nav class="flex"><ol class="inline-flex items-center text-sm text-slate-500"><li><a href="{{ route('home') }}">Dashboard</a></li><li><span class="mx-2">/</span></li><li><a href="{{ route('test-requests.index') }}">Pengujian</a></li><li><span class="mx-2">/</span></li><li class="text-rose-600 font-semibold">Tracking</li></ol></nav>

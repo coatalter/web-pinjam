@@ -3,8 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PinRuang — Sistem Peminjaman Ruangan</title>
+    <title>Si-Labu — Sistem Informasi Laboratorium Terpadu</title>
+    <meta name="view-transition" content="same-origin" />
     @vite(['resources/css/app.css'])
+    <!-- AlpineJS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* View Transition Customization */
+        ::view-transition-old(root),
+        ::view-transition-new(root) { animation-duration: 0.3s; }
+        .page-fade-out { opacity: 0; transition: opacity 0.25s ease-out; }
+    </style>
 </head>
 <body class="bg-navy-950 text-white font-sans antialiased overflow-x-hidden">
 
@@ -15,7 +24,7 @@
                 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-navy-500 to-navy-700 flex items-center justify-center shadow-lg shadow-navy-500/20 border border-gold-400/30">
                     <svg class="w-4 h-4 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                 </div>
-                <span class="text-lg font-extrabold tracking-tight">PinRuang</span>
+                <span class="text-lg font-extrabold tracking-tight">Si-Labu</span>
             </a>
             <div class="flex items-center gap-3">
                 @auth
@@ -53,15 +62,15 @@
         <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-gold-500/20 text-sm text-gold-400 font-medium mb-8 backdrop-blur-sm">
                 <span class="w-2 h-2 rounded-full bg-gold-400 animate-pulse"></span>
-                Sistem Peminjaman Ruangan UPR
+                Sistem Informasi Lab Terpadu UPR
             </div>
             <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] mb-6">
-                Pinjam Ruangan
-                <span class="bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 bg-clip-text text-transparent">Lebih Mudah</span>
-                & Cepat
+                Sistem Informasi
+                <span class="bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 bg-clip-text text-transparent">Laboratorium</span>
+                Terpadu
             </h1>
             <p class="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                Platform digital untuk peminjaman ruangan kampus UPR. Ajukan, lacak, dan kelola peminjaman ruangan dalam satu tempat yang terintegrasi.
+                Platform digital untuk manajemen laboratorium UPR. Kelola praktikum, alat, pengujian, dan riset dalam satu tempat yang terintegrasi.
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                 @auth
@@ -87,16 +96,17 @@
 
     <!-- Features -->
     <section class="relative py-24">
-        <div class="max-w-6xl mx-auto px-6">
+        <div class="max-w-6xl mx-auto px-6">    
             <div class="text-center mb-16">
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">Fitur Utama</h2>
-                <p class="text-slate-400 max-w-xl mx-auto">Semua yang kamu butuhkan untuk mengelola peminjaman ruangan kampus</p>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">Layanan Utama</h2>
+                <p class="text-slate-400 max-w-xl mx-auto">Semua yang kamu butuhkan untuk kegiatan laboratorium kampus</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach([
-                    ['icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', 'title' => 'Booking Online', 'desc' => 'Ajukan peminjaman ruangan kapan saja dan di mana saja melalui platform digital.', 'color' => 'gold'],
-                    ['icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', 'title' => 'Approval Cepat', 'desc' => 'Sistem persetujuan terintegrasi oleh admin dengan deteksi konflik otomatis.', 'color' => 'success'],
-                    ['icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5', 'title' => 'Kelola Ruangan', 'desc' => 'Data ruangan lengkap dengan kapasitas, fasilitas, dan jadwal ketersediaan.', 'color' => 'navy'],
+                    ['icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', 'title' => 'Layanan Praktikum', 'desc' => 'Daftar dan kelola jadwal praktikum serta unduh modul panduan dengan mudah.', 'color' => 'gold'],
+                    ['icon' => 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z', 'title' => 'Layanan Pengujian', 'desc' => 'Ajukan uji sampel dengan alat laboratorium standar industri yang tersedia.', 'color' => 'success'],
+                    ['icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', 'title' => 'Peminjaman Alat', 'desc' => 'Daftar alat lengkap dengan status ketersediaan untuk keperluan penelitian mahasiswa.', 'color' => 'navy'],
+                    ['icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01', 'title' => 'Layanan Penelitian', 'desc' => 'Ajukan proposal riset, jadwalkan penggunaan lab, dan dokumentasikan hasil penelitian.', 'color' => 'info'],
                 ] as $feature)
                     <div class="group relative rounded-2xl bg-white/[0.03] border border-white/[0.06] p-8 hover:bg-white/[0.06] hover:border-white/10 transition-all duration-300 hover:shadow-lg hover:shadow-white/5 hover:-translate-y-1">
                         <div class="w-12 h-12 rounded-2xl bg-{{ $feature['color'] }}-500/10 border border-{{ $feature['color'] }}-500/20 flex items-center justify-center text-{{ $feature['color'] }}-400 mb-5">
@@ -117,7 +127,7 @@
                 <div class="w-5 h-5 rounded bg-gradient-to-br from-navy-500 to-navy-700 flex items-center justify-center border border-gold-500/30">
                     <svg class="w-2.5 h-2.5 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"></path></svg>
                 </div>
-                PinRuang © {{ date('Y') }}
+                Si-Labu © {{ date('Y') }}
             </div>
             <p class="text-xs text-slate-600">Universitas Palangka Raya</p>
         </div>
@@ -131,5 +141,24 @@
         .animate-float-medium { animation: float-medium 6s ease-in-out infinite; }
         .animate-float-fast { animation: float-fast 4s ease-in-out infinite; }
     </style>
+
+    <script>
+        // SPA-like simple page transitions for links
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('a[href]:not([target="_blank"]):not([href^="#"]):not([href^="javascript:"])');
+            links.forEach(link => {
+                link.addEventListener('click', e => {
+                    if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+                    if (link.origin !== window.location.origin) return;
+                    e.preventDefault();
+                    document.body.classList.add('page-fade-out');
+                    setTimeout(() => { window.location.href = link.href; }, 200);
+                });
+            });
+        });
+        window.addEventListener('pageshow', (e) => {
+            if (e.persisted) document.body.classList.remove('page-fade-out');
+        });
+    </script>
 </body>
 </html>

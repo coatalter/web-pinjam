@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 class LoginController extends Controller
 {
     /*
@@ -46,8 +48,8 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        if (auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))) {
-            $roleSlug = auth()->user()->role?->slug;
+        if (Auth::attempt(['email' => $input['email'], 'password' => $input['password']])) {
+            $roleSlug = Auth::user()->role?->slug;
             if (in_array($roleSlug, ['admin', 'admin-fakultas', 'admin-lab', 'penguji', 'reviewer'])) {
                 return redirect()->route('admin.home');
             } else {

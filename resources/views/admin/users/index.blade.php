@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-6 animate-fade-in">
+    <div class="space-y-6 ">
         <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight">Manajemen User</h1>
-                <p class="text-sm text-slate-500 mt-1">Kelola semua pengguna sistem PinRuang</p>
+                <p class="text-sm text-slate-500 mt-1">Kelola semua pengguna sistem Si-Labu</p>
             </div>
             <a href="{{ route('admin.users.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-navy-900 bg-gold-500 rounded-xl hover:bg-gold-400 transition-all shadow-md">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
@@ -27,12 +27,12 @@
 
         <!-- Filters -->
         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
-            <form method="GET" action="{{ route('admin.users.index') }}" class="flex flex-col sm:flex-row gap-3">
+            <form method="GET" action="{{ route('admin.users.index') }}" class="flex flex-col sm:flex-row gap-3" hx-target="#table-container" hx-select="#table-container" hx-swap="outerHTML swap:200ms settle:200ms" hx-push-url="true">
                 <div class="flex-1">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama atau email..."
                         class="block w-full px-4 py-2.5 text-sm border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-gold-400 focus:border-gold-400 focus:outline-none transition-all">
                 </div>
-                <select name="role" class="px-4 py-2.5 text-sm border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-gold-400 focus:border-gold-400 focus:outline-none">
+                <select name="role" class="px-4 py-2.5 text-sm border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-gold-400 focus:border-gold-400 focus:outline-none" onchange="this.form.submit()">
                     <option value="">Semua Role</option>
                     @foreach($roles as $role)
                         <option value="{{ $role->id }}" {{ request('role') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
@@ -46,7 +46,7 @@
         </div>
 
         <!-- Table -->
-        <div class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden">
+        <div id="table-container" class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden table-transition">
             <!-- Desktop Table -->
             <div class="overflow-x-auto hidden md:block">
                 <table class="w-full text-left min-w-max">
@@ -140,5 +140,5 @@
             @endif
         </div>
     </div>
-    <style>@keyframes fade-in{0%{opacity:0;transform:translateY(10px);}100%{opacity:1;transform:translateY(0);}}.animate-fade-in{animation:fade-in .5s cubic-bezier(.16,1,.3,1) forwards;}</style>
+    <style>@keyframes fade-in{0%{opacity:0;transform:translateY(10px);}100%{opacity:1;transform:translateY(0);}}.{animation:fade-in .5s cubic-bezier(.16,1,.3,1) forwards;}</style>
 @endsection

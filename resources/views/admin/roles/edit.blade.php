@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-6 animate-fade-in">
+    <div class="space-y-6 ">
         <!-- Header & Breadcrumbs -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div class="flex items-center gap-4">
@@ -32,19 +32,65 @@
                     <!-- Decorative background element -->
                     <div class="absolute top-0 right-0 -mt-16 -mr-16 w-64 h-64 bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
                     
-                    <div class="px-8 py-6 border-b border-slate-100 flex items-center gap-4 bg-slate-50/50 relative z-10">
-                        <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500 shadow-sm">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                            </svg>
+                        <!-- Header Container with x-data for Modal -->
+                        <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between gap-4 bg-slate-50/50 relative z-10" x-data="{ showHelp: false }">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500 shadow-sm">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                        Edit Role: {{ $role->name }}
+                                        <button @click="showHelp = true" type="button" class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" title="Bantuan & Penjelasan">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        </button>
+                                    </h2>
+                                    <p class="text-sm border border-slate-200 bg-white px-2 py-0.5 rounded text-slate-500 font-mono inline-block mt-1">slug: {{ $role->slug }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Help Modal -->
+                            <div x-show="showHelp" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                                <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                                    <div x-show="showHelp" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 transition-opacity bg-slate-900/60 backdrop-blur-sm" aria-hidden="true" @click="showHelp = false"></div>
+
+                                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                                    <div x-show="showHelp" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="inline-block w-full max-w-lg px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-2xl shadow-2xl border border-slate-100 sm:my-8 sm:align-middle sm:p-6">
+                                        <div class="sm:flex sm:items-start">
+                                            <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-blue-50 rounded-full sm:mx-0 sm:h-10 sm:w-10">
+                                                <svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            </div>
+                                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                                <h3 class="text-lg font-bold leading-6 text-slate-800" id="modal-title">Panduan: Apa itu Role?</h3>
+                                                <div class="mt-4 space-y-4 text-sm text-slate-600">
+                                                    <p>
+                                                        <strong>Role (Peran)</strong> adalah status jabatan yang diberikan kepada pengguna aplikasi. Misalnya: <em>"Admin"</em>, <em>"Dosen"</em>, atau <em>"Mahasiswa"</em>.
+                                                    </p>
+                                                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                                        <h4 class="font-bold text-slate-700 mb-1">📝 Istilah Penting:</h4>
+                                                        <ul class="list-disc pl-5 space-y-2">
+                                                            <li><strong>Nama Role:</strong> Nama jabatan yang mudah dibaca oleh manusia (Contoh: <span class="text-blue-600 font-medium">Admin Perusahaan</span>).</li>
+                                                            <li><strong>Slug Sistem:</strong> Kode panggil khusus untuk sistem komputer. Harus huruf kecil semua tanpa spasi (Contoh: <span class="font-mono text-rose-500 bg-rose-50 px-1 py-0.5 rounded">admin_perusahaan</span>). <strong>Sebaiknya tidak diubah jika sistem sudah berjalan.</strong></li>
+                                                        </ul>
+                                                    </div>
+                                                    <p>
+                                                        Dengan mengatur role yang tepat, Anda bisa mengontrol menu dan fitur apa saja yang boleh dilihat atau diklik oleh pengguna tersebut.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-6 sm:mt-8 sm:flex sm:flex-row-reverse">
+                                            <button type="button" class="inline-flex justify-center w-full px-4 py-2 text-base font-semibold text-white bg-blue-600 border border-transparent rounded-xl shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm transition-colors" @click="showHelp = false">
+                                                Saya Mengerti
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-                                Edit Role: {{ $role->name }}
-                            </h2>
-                            <p class="text-sm border border-slate-200 bg-white px-2 py-0.5 rounded text-slate-500 font-mono inline-block mt-1">slug: {{ $role->slug }}</p>
-                        </div>
-                    </div>
 
                     <div class="p-8 relative z-10">
                         <form action="{{ route('admin.roles.update', $role) }}" method="POST" class="space-y-6">
@@ -153,7 +199,7 @@
             0% { opacity: 0; transform: translateY(10px); }
             100% { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-in {
+        . {
             animation: fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
     </style>

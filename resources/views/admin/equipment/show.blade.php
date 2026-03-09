@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-8 animate-fade-in">
+    <div class="space-y-8 ">
         <div
             class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden">
             <div
@@ -114,7 +114,7 @@
             }
         }
 
-        .animate-fade-in {
+        . {
             animation: fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 

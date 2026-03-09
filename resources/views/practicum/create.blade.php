@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-8 animate-fade-in">
+    <div class="space-y-8 ">
         <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl">
             <h1 class="text-3xl font-extrabold text-slate-800 mb-1">Daftar Praktikum</h1>
             <nav class="flex">

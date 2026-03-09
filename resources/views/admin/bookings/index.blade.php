@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-8 animate-fade-in">
+    <div class="space-y-8 ">
         <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden">
             <div class="absolute -top-24 -right-24 w-64 h-64 bg-navy-500/20 rounded-full mix-blend-screen filter blur-[80px] animate-pulse-slow"></div>
@@ -40,13 +40,13 @@
         </div>
 
         <!-- Table -->
-        <div class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden">
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden table-transition" id="table-container">
             <div class="px-8 py-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-50/50">
                 <div>
                     <h4 class="text-xl font-bold text-slate-800 mb-1">Daftar Peminjaman</h4>
                     <p class="text-sm text-slate-500">Kelola persetujuan peminjaman ruangan</p>
                 </div>
-                <form method="GET" action="{{ route('admin.bookings.index') }}" class="flex gap-2 flex-wrap w-full sm:w-auto">
+                <form method="GET" action="{{ route('admin.bookings.index') }}" class="flex gap-2 flex-wrap w-full sm:w-auto" hx-target="#table-container" hx-select="#table-container" hx-swap="outerHTML swap:200ms settle:200ms" hx-push-url="true">
                     <select name="status" class="px-3 py-2 border border-slate-200 rounded-xl text-sm bg-white focus:ring-2 focus:ring-gold-500" onchange="this.form.submit()">
                         <option value="">Semua Status</option>
                         <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Menunggu</option>
@@ -145,7 +145,7 @@
     </div>
     <style>
         @keyframes fade-in { 0% { opacity:0; transform:translateY(10px); } 100% { opacity:1; transform:translateY(0); } }
-        .animate-fade-in { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+        . { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
         @keyframes pulse-slow { 0%,100% { opacity:0.2; } 50% { opacity:0.3; } }
         .animate-pulse-slow { animation: pulse-slow 8s ease-in-out infinite; }
     </style>

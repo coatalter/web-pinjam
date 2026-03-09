@@ -8,7 +8,7 @@
         <div class="w-8 h-8 rounded-lg flex items-center justify-center">
             @include('layouts.partials.admin.logo')
         </div>
-        <span class="text-lg font-extrabold text-white tracking-tight">PinRuang</span>
+        <span class="text-lg font-extrabold text-white tracking-tight">Si-Labu</span>
         <span class="ml-auto text-[10px] font-bold bg-navy-200 text-navy-800 px-1.5 py-0.5 rounded">USER</span>
     </div>
 

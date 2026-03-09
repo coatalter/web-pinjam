@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-8 animate-fade-in">
+    <div class="space-y-8 ">
         <!-- Welcome -->
         <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-navy-600 via-navy-500 to-navy-700 p-8 shadow-xl">
             <div class="absolute -top-20 -right-20 w-64 h-64 bg-gold-500/10 rounded-full blur-3xl"></div>
@@ -101,5 +101,5 @@
             </div>
         </div>
     </div>
-    <style>@keyframes fade-in{0%{opacity:0;transform:translateY(10px);}100%{opacity:1;transform:translateY(0);}}.animate-fade-in{animation:fade-in .5s cubic-bezier(.16,1,.3,1) forwards;}</style>
+    <style>@keyframes fade-in{0%{opacity:0;transform:translateY(10px);}100%{opacity:1;transform:translateY(0);}}.{animation:fade-in .5s cubic-bezier(.16,1,.3,1) forwards;}</style>
 @endsection

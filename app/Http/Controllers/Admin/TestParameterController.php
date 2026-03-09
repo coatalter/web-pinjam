@@ -37,7 +37,7 @@ class TestParameterController extends Controller
             'method' => 'nullable|string|max:255',
             'category' => 'required|in:soil,water,plant_tissue',
             'price' => 'required|numeric|min:0',
-            'is_active' => 'boolean',
+            'is_active' => 'nullable',
         ]);
 
         $validated['is_active'] = $request->has('is_active');
@@ -60,7 +60,7 @@ class TestParameterController extends Controller
             'method' => 'nullable|string|max:255',
             'category' => 'required|in:soil,water,plant_tissue',
             'price' => 'required|numeric|min:0',
-            'is_active' => 'boolean',
+            'is_active' => 'nullable',
         ]);
 
         $validated['is_active'] = $request->has('is_active');

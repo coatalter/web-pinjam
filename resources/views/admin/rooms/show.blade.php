@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-6 animate-fade-in">
+    <div class="space-y-6 ">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div class="flex items-center gap-4">
                 <a href="{{ route('admin.rooms.index') }}"
@@ -193,7 +193,7 @@
             }
         }
 
-        .animate-fade-in {
+        . {
             animation: fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
     </style>

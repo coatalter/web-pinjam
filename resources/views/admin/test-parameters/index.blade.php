@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-8 animate-fade-in">
+    <div class="space-y-8 ">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden">
             <div class="absolute -top-24 -right-24 w-64 h-64 bg-purple-500/20 rounded-full mix-blend-screen filter blur-[80px]"></div>
             <div class="relative z-10">
@@ -43,7 +43,8 @@
                 </form>
             </div>
 
-            <div class="overflow-x-auto">
+            <!-- Desktop Table -->
+            <div class="overflow-x-auto hidden md:block">
                 <table class="w-full text-left border-collapse min-w-max">
                     <thead>
                         <tr class="bg-white border-b border-slate-100 text-slate-500 text-xs font-bold uppercase tracking-widest">
@@ -93,6 +94,43 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Mobile Card View -->
+            <div class="md:hidden divide-y divide-slate-100">
+                @forelse($parameters as $param)
+                    <div class="p-4 block hover:bg-slate-50 transition-colors">
+                        <div class="flex items-start justify-between mb-2 gap-2">
+                            <h5 class="text-sm font-bold text-slate-800 truncate flex-1">{{ $param->name }}</h5>
+                            <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-semibold shrink-0 text-center
+                                {{ $param->category === 'soil' ? 'bg-amber-100 text-amber-700' : '' }}
+                                {{ $param->category === 'water' ? 'bg-cyan-100 text-cyan-700' : '' }}
+                                {{ $param->category === 'plant_tissue' ? 'bg-green-100 text-green-700' : '' }}
+                            ">{{ $param->category_label }}</span>
+                        </div>
+                        <div class="text-xs text-slate-500 mb-3 space-y-1">
+                            <p class="truncate"><strong>Metode:</strong> {{ $param->method ?? '-' }}</p>
+                            <p><strong>Satuan:</strong> {{ $param->unit ?? '-' }}</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="font-mono font-bold text-slate-700">Rp {{ number_format($param->price, 0, ',', '.') }}</span>
+                                @if($param->is_active)
+                                    <span class="text-emerald-600 font-semibold px-2 py-0.5 bg-emerald-50 rounded">Aktif</span>
+                                @else
+                                    <span class="text-slate-400 font-semibold px-2 py-0.5 bg-slate-50 rounded">Nonaktif</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-1 pt-2 border-t border-slate-50">
+                            <a href="{{ route('admin.test-parameters.edit', $param) }}" class="inline-flex items-center px-4 py-1.5 text-xs font-semibold text-amber-700 bg-amber-50 rounded-lg hover:bg-amber-100">Edit</a>
+                            <form method="POST" action="{{ route('admin.test-parameters.destroy', $param) }}" onsubmit="return confirm('Hapus parameter ini?')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="inline-flex items-center px-4 py-1.5 text-xs font-semibold text-rose-700 bg-rose-50 rounded-lg hover:bg-rose-100">Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                @empty
+                    <div class="p-8 text-center text-slate-400 text-sm">Belum ada parameter.</div>
+                @endforelse
             </div>
 
             @if($parameters->hasPages())

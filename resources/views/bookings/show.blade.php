@@ -1,7 +1,7 @@
 @extends('layouts.user')
 
 @section('content')
-    <div class="space-y-6 animate-fade-in">
+    <div class="space-y-6 ">
         <div class="flex items-center gap-4">
             <a href="{{ route('bookings.index') }}"
                 class="flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-cyan-600 hover:border-cyan-200 hover:bg-cyan-50 transition-all shadow-sm">
@@ -143,7 +143,7 @@
             }
         }
 
-        .animate-fade-in {
+        . {
             animation: fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
     </style>

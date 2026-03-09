@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-6 animate-fade-in">
+    <div class="space-y-6 ">
         <div class="flex items-center gap-4">
             <a href="{{ route('admin.rooms.index') }}" class="flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-teal-600 hover:border-teal-200 hover:bg-teal-50 transition-all shadow-sm">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
@@ -108,7 +108,7 @@
         </div>
     </div>
 
-    <style>@keyframes fade-in { 0% { opacity:0; transform:translateY(10px); } 100% { opacity:1; transform:translateY(0); } } .animate-fade-in { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }</style>
+    <style>@keyframes fade-in { 0% { opacity:0; transform:translateY(10px); } 100% { opacity:1; transform:translateY(0); } } . { animation: fade-in 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }</style>
     <script>
         function toggleFaculty() {
             document.getElementById('facultyField').style.display = document.getElementById('scope').value === 'fakultas' ? '' : 'none';

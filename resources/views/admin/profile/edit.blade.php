@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="max-w-4xl mx-auto space-y-6 animate-fade-in">
+    <div class="max-w-4xl mx-auto space-y-6 ">
         <!-- Header -->
         <div class="flex flex-col gap-2">
             <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Edit Profil</h1>
