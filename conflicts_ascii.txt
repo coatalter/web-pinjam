@@ -1,0 +1,8 @@
+app/Http/Controllers/Auth/LoginController.php
+resources/views/admin/users/index.blade.php
+resources/views/auth/login.blade.php
+resources/views/bookings/index.blade.php
+resources/views/layouts/partials/admin/menu-item.blade.php
+resources/views/layouts/partials/admin/navbar-vertical-admin.blade.php
+resources/views/layouts/partials/admin/scripts.blade.php
+resources/views/welcome.blade.php
